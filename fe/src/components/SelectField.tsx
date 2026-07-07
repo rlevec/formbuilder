@@ -1,4 +1,4 @@
-import { memo, useState, useCallback } from "react";
+import { useState } from "react";
 import type { FieldUpdateParams, FormField } from "../../types";
 
 import { ChevronDown } from "lucide-react";
@@ -14,20 +14,17 @@ interface Props {
   onSelect: (params: FieldUpdateParams) => void;
 }
 
-const SelectField = ({ field, value, error, onSelect }: Props) => {
+export default function SelectField({ field, value, error, onSelect }: Props) {
   const [open, setOpen] = useState(false);
 
-  const handleSelect = useCallback(
-    (option: string) => {
+  const handleSelect = (option: string) => {
       onSelect({
         fieldName: field.name || "",
         value: option,
         field,
       });
       setOpen(false);
-    },
-    [onSelect, field],
-  );
+    }
 
   console.log("fieldOptions", field.options);
 
@@ -77,5 +74,3 @@ const SelectField = ({ field, value, error, onSelect }: Props) => {
     </div>
   );
 };
-
-export default memo(SelectField);

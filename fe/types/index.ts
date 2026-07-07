@@ -175,3 +175,16 @@ export type FormBuilderQueryState = Record<
   string,
   Record<string, Record<string, string | boolean>>
 >;
+
+
+export interface FormbuilderResponse {
+  error: boolean;
+  message: string;
+  data?: FormBuilder;
+}
+
+export interface AuthFormResponse {
+  error: boolean;
+  message: string;
+  data?: FormData;
+}

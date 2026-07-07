@@ -1,4 +1,4 @@
-import { memo, useState, useCallback } from "react";
+import { useState } from "react";
 
 import { Plus, Minus } from "lucide-react";
 
@@ -14,10 +14,10 @@ interface Props {
   onClick: (params: FieldUpdateParams) => void;
 }
 
-const OptionsBuilderField = ({ field, options, error, onClick }: Props) => {
+export default function OptionsBuilderField({ field, options, error, onClick }: Props) {
   const [query, setQuery] = useState("");
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = () => {
     if (!query.trim()) return;
 
     onClick({
@@ -27,7 +27,7 @@ const OptionsBuilderField = ({ field, options, error, onClick }: Props) => {
     });
 
     setQuery("");
-  }, [onClick, query, field]);
+  }
 
   const errorId = field.name ? `${field.name}-error` : undefined;
 
@@ -102,5 +102,3 @@ const OptionsBuilderField = ({ field, options, error, onClick }: Props) => {
     </div>
   );
 };
-
-export default memo(OptionsBuilderField);

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Search } from "lucide-react";
 
 import styles from "../styles/searchInput.module.css";
@@ -11,7 +10,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchField = (props: Props) => {
+export default function SearchField(props: Props) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.inputWrapper}>
@@ -32,7 +31,3 @@ const SearchField = (props: Props) => {
     </div>
   );
 };
-
-const MemoizedSearchField = memo(SearchField);
-
-export default MemoizedSearchField;

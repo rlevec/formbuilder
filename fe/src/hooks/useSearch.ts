@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useRef } from "react";
 
 import type { FormBuilderField } from "../../types";
 
@@ -16,10 +16,10 @@ export function useSearch({
   const [search, setSearch] = useState("");
 
   const [results, setResults] = useState<FormBuilderField[]>(data);
-  
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const onChange = useCallback((value: string) => {
+ const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const onChange = (value: string) => {
     setSearch(value);
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -34,7 +34,7 @@ export function useSearch({
         setResults(filtered);
       }
     }, delay);
-  }, [delay, data, filter]); 
+  }
 
   return {
     search,

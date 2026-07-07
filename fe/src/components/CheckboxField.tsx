@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import styles from "../styles/checkboxField.module.css";
 
 import type { FormField, FieldUpdateParams } from "../../types";
@@ -11,7 +9,7 @@ interface Props {
   onChange: (params: FieldUpdateParams) => void;
 }
 
-export const CheckboxField = ({ field, error, value, onChange }: Props) => {
+export default function CheckboxField({ field, error, value, onChange }: Props) {
   return (
     <div className={styles.wrapper}>
       <label
@@ -43,7 +41,3 @@ export const CheckboxField = ({ field, error, value, onChange }: Props) => {
     </div>
   );
 };
-
-const MemoizedCheckboxField = memo(CheckboxField);
-
-export default MemoizedCheckboxField;

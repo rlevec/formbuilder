@@ -1,5 +1,3 @@
-import { memo, useMemo } from "react";
-
 import type { FormField } from "../../types";
 
 import FormCanvasElement from "./FormCanvasElement";
@@ -25,7 +23,7 @@ interface Props {
   selectedFormSettings: Record<string, string | boolean>;
 }
 
-export const FormCanvas = ({
+export default function FormCanvas({
   data,
   handleDragStart,
   handleDrop,
@@ -34,8 +32,7 @@ export const FormCanvas = ({
   canvasFieldSelected,
   updateCanvasFieldValue,
   selectedFormSettings,
-}: Props) => {
-  console.log("selectedFormSettings", selectedFormSettings);
+}: Props) {
 
   const safeTextAlign = (value?: string): React.CSSProperties["textAlign"] => {
     if (
@@ -50,29 +47,21 @@ export const FormCanvas = ({
     return "center";
   };
 
-  const canvasStyles = useMemo(
-    () => ({
+  const canvasStyles = {
       width: "100%",
       height: "100%",
       backgroundColor: selectedFormSettings?.canvasBackgroundColor ? String(selectedFormSettings?.canvasBackgroundColor) : "var(--surface)",
       padding: String(selectedFormSettings?.canvasPadding),
       border: String(selectedFormSettings?.canvasBorder),
-    }),
-    [selectedFormSettings],
-  );
-
-  const gridStyles = useMemo(
-    () => ({
+    }
+  const gridStyles = {
       display: "grid",
       gridTemplateColumns: "repeat(2, 1fr)",
       rowGap: selectedFormSettings?.gridVerticalGap as string,
       columnGap: selectedFormSettings?.gridHorizontalGap as string,
-    }),
-    [selectedFormSettings],
-  );
+    }
 
-  const headerStyles = useMemo(
-    () => ({
+  const headerStyles = {
       margin: selectedFormSettings?.headerMargin as string,
       color: selectedFormSettings?.headerTextColor as string,
       fontSize: selectedFormSettings?.headerTextSize as string,
@@ -80,12 +69,9 @@ export const FormCanvas = ({
       textAlign: safeTextAlign(
         selectedFormSettings?.headerAlignment as React.CSSProperties["textAlign"],
       ),
-    }),
-    [selectedFormSettings],
-  );
+    }
 
-  const descriptionStyles = useMemo(
-    () => ({
+  const descriptionStyles = {
       margin: selectedFormSettings?.descriptionMargin as string,
       color: selectedFormSettings?.descriptionTextColor as string,
       fontSize: selectedFormSettings?.descriptionTextSize as string,
@@ -93,12 +79,9 @@ export const FormCanvas = ({
       textAlign: safeTextAlign(
         selectedFormSettings?.descriptionAlignmentStyle as React.CSSProperties["textAlign"],
       ),
-    }),
-    [selectedFormSettings],
-  );
+    }
 
-  const buttonStyles = useMemo(
-    () => ({
+  const buttonStyles = {
       alignSelf: selectedFormSettings?.buttonAlignment as string,
       margin: selectedFormSettings?.buttonMargin as string,
       padding: selectedFormSettings?.buttonPadding as string,
@@ -107,12 +90,9 @@ export const FormCanvas = ({
       color: selectedFormSettings?.buttonTextColor as string,
       border: selectedFormSettings?.buttonBorder as string,
       borderRadius: selectedFormSettings?.buttonBorderRadius as string,
-    }),
-    [selectedFormSettings],
-  );
+    }
 
-  const buttonContainerStyles = useMemo(
-    () => ({
+  const buttonContainerStyles = {
       display: "flex",
       justifyContent:
         selectedFormSettings?.buttonAlignment === "left"
@@ -120,9 +100,7 @@ export const FormCanvas = ({
           : selectedFormSettings?.buttonAlignment === "right"
           ? "flex-end"
           : "center",
-    }),
-    [selectedFormSettings],
-  );
+    }
 
   if (!data) return null;
 
@@ -166,7 +144,3 @@ export const FormCanvas = ({
     </div>
   );
 };
-
-const MemoizedFormCanvas = memo(FormCanvas);
-
-export default MemoizedFormCanvas;

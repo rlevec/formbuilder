@@ -1,4 +1,6 @@
-import { memo, useState } from "react";
+import { useState } from "react";
+
+import type { LucideIcon } from "lucide-react";
 
 import type { FormField, FieldUpdateParams } from "../../types";
 interface Props {
@@ -12,15 +14,16 @@ import { Star, Smile, Heart } from "lucide-react";
 
 import styles from "../styles/ratingField.module.css";
 
-export const RatingField = ({ field, onSelect, value, error }: Props) => {
+export default function RatingField({ field, onSelect, value }: Props) {
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
 
-  const IconMap = {
+  const IconMap: Record<string, LucideIcon> = {
     stars: Star,
     hearts: Heart,
     emoji: Smile,
   };
-  const Icon = IconMap[field.ratingStyle || "stars"] || Star;
+
+  const Icon = IconMap[field.ratingStyle ?? "stars"] ?? Star;
 
   const fieldMaxRating = Number(field.maxRating)
     ? Number(field.maxRating) > 10
@@ -39,7 +42,7 @@ export const RatingField = ({ field, onSelect, value, error }: Props) => {
               onMouseLeave={() => setHoveredRating(null)}
               className={`${styles.ratingIcon} ${
                 (hoveredRating !== null ? i < hoveredRating : i < Number(value))
-                  ? `${styles[`active_${field.ratingStyle !== "emoji" ?  field.ratingStyle : `${field.ratingStyle}_${i + 1}`}`]}`
+                  ? `${styles[`active_${field.ratingStyle !== "emoji" ? field.ratingStyle : `${field.ratingStyle}_${i + 1}`}`]}`
                   : ""
               }`}
               key={i}
@@ -58,8 +61,4 @@ export const RatingField = ({ field, onSelect, value, error }: Props) => {
       </div>
     </div>
   );
-};
-
-const MemoizedRatingField = memo(RatingField);
-
-export default MemoizedRatingField;
+}

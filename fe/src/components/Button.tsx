@@ -1,6 +1,7 @@
 import styles from "../styles/button.module.css";
-import { memo } from "react";
+
 import type { ReactNode, KeyboardEvent } from "react";
+
 import type { LucideIcon } from "lucide-react";
 
 interface Props {
@@ -22,7 +23,7 @@ interface Props {
   children?: ReactNode;
 }
 
-const Button = ({
+export default function Button({
   title,
   type,
   visual,
@@ -39,7 +40,7 @@ const Button = ({
   ariaExpanded,
   children,
   onKeyDown
-}: Props) => {
+}: Props){
   return (
     <button
       aria-expanded={ariaExpanded}
@@ -66,7 +67,3 @@ const Button = ({
     </button>
   );
 };
-
-const MemoizedButton = memo(Button);
-
-export default MemoizedButton;

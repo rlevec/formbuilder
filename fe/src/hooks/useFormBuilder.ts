@@ -1,11 +1,10 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import { useCustomMutation } from "../api";
 
 type CanvasFieldValue = string | boolean | string[] | number;
-
 
 type CanvasFieldInstance = {
   id: string;
@@ -74,10 +73,11 @@ export default function useFromBuilder(data: FormBuilder) {
 
   const [canvasFields, setCanvasFields] = useState<CanvasFieldInstance[]>([]);
 
-  const [selectedFormSettings, setSelectedFormSettings] = useState<Record<string, string | boolean>>({});
+  const [selectedFormSettings, setSelectedFormSettings] = useState<
+    Record<string, string | boolean>
+  >({});
 
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const logoutMutation = useCustomMutation({
     fetchParams: {
@@ -85,97 +85,88 @@ export default function useFromBuilder(data: FormBuilder) {
       options: { method: "POST" },
     },
     options: {
-      onSuccess: () => navigate(routes.client.login, {replace: true}),
+      onSuccess: () => navigate(routes.client.login, { replace: true }),
       onError: (data: Response) => console.log("error_data", data),
     },
   });
 
-  const handleFieldUpdate = useCallback(
-    ({ fieldName, value, field, isOptionDelete }: HandleFieldUpdateParams) => {
-      const inputType = field?.inputType;
+  const handleFieldUpdate = ({
+    fieldName,
+    value,
+    field,
+    isOptionDelete,
+  }: HandleFieldUpdateParams) => {
+    const inputType = field?.inputType;
 
-      const normalizedValue =
-        inputType === "switch" ? !Boolean(value) : String(value);
+    const normalizedValue = inputType === "switch" ? !!value : String(value);
 
-      if (activeSettings === "form") {
-        setFormConfigQuery((prev) => ({
-          ...prev,
-          [fieldName]: normalizedValue,
-        }));
-        return;
-      }
-
-      if (inputType === "optionsBuilder") {
-        setFieldConfigQuery((prev) => {
-          const current = prev[fieldName];
-          const list = Array.isArray(current) ? current : [];
-
-          if (isOptionDelete) {
-            return {
-              ...prev,
-              [fieldName]: list.filter((v) => v !== value),
-            };
-          }
-
-          if (list.includes(String(value))) return prev;
-
-          return {
-            ...prev,
-            [fieldName]: [...list, String(value)],
-          };
-        });
-
-        return;
-      }
-
-      setFieldConfigQuery((prev) => ({
+    if (activeSettings === "form") {
+      setFormConfigQuery((prev) => ({
         ...prev,
         [fieldName]: normalizedValue,
       }));
-    },
-    [activeSettings],
-  );
-
-  const { inputFields, fieldTypes } = useMemo(() => {
-    const list = Array.isArray(data.fieldTypes) ? data.fieldTypes : [];
-
-    const inputFields: FormBuilderField[] = [];
-    const fieldTypesArr: FormBuilderField[] = [];
-
-    for (const el of list) {
-      if (!el) continue;
-
-      if (el.isInput) {
-        inputFields.push(el);
-      } else {
-        fieldTypesArr.push(el);
-      }
+      return;
     }
 
-    return {
-      inputFields,
-      fieldTypes: fieldTypesArr,
-    };
-  }, [data.fieldTypes]);
+    if (inputType === "optionsBuilder") {
+      setFieldConfigQuery((prev) => {
+        const current = prev[fieldName];
+        const list = Array.isArray(current) ? current : [];
 
-  const handleTabChange = useCallback(
-    (type: "field" | "form") => setActiveSettings(type),
-    [],
-  );
+        if (isOptionDelete) {
+          return {
+            ...prev,
+            [fieldName]: list.filter((v) => v !== value),
+          };
+        }
 
-  const handleDragStart = useCallback((startId: string): void => {
+        if (list.includes(String(value))) return prev;
+
+        return {
+          ...prev,
+          [fieldName]: [...list, String(value)],
+        };
+      });
+
+      return;
+    }
+
+    setFieldConfigQuery((prev) => ({
+      ...prev,
+      [fieldName]: normalizedValue,
+    }));
+  };
+
+  const list = Array.isArray(data.fieldTypes) ? data.fieldTypes : [];
+
+  const inputFields: FormBuilderField[] = [];
+  const fieldTypes: FormBuilderField[] = [];
+
+  for (const el of list) {
+    if (!el) continue;
+
+    if (el.isInput) {
+      inputFields.push(el);
+    } else {
+      fieldTypes.push(el);
+    }
+  }
+
+  const handleTabChange = (type: "field" | "form") => setActiveSettings(type);
+
+  const handleDragStart = (startId: string): void => {
     if (!startId) return;
 
     dragStartIdRef.current = startId;
-  }, []);
+  };
 
-  const handleDragOver = useCallback((dragId: string): void => {
+  const handleDragOver = (dragId: string): void => {
     if (!dragId) return;
 
     dragOverIdRef.current = dragId;
-  }, []);
+  };
 
-  const handleDrop = useCallback((dropId: string) => {
+  const handleDrop = (dropId: string) => {
     const startId = dragStartIdRef.current;
 
     if (!startId || !dropId) return;
@@ -197,34 +188,37 @@ export default function useFromBuilder(data: FormBuilder) {
 
     dragStartIdRef.current = null;
     dragOverIdRef.current = null;
-  }, []);
+  };
 
-  const handleDragEnd = useCallback(() => {
+  const handleDragEnd = () => {
     dragStartIdRef.current = null;
     dragOverIdRef.current = null;
-  }, []);
+  };
 
-  const handleSelectDefaultFieldConfig = useCallback(
-    ({ slug, id }: { slug: string; id: string }) => {
-      setSelectedDefaultFieldConfig((prev) => {
-        if (prev?.id === id) return prev;
-        return { slug, id };
-      });
+  const handleSelectDefaultFieldConfig = ({
+    slug,
+    id,
+  }: {
+    slug: string;
+    id: string;
+  }) => {
+    setSelectedDefaultFieldConfig((prev) => {
+      if (prev?.id === id) return prev;
+      return { slug, id };
+    });
 
-      const fields = data.settings.fields;
-      const targetConfig = fields[slug] ?? [];
+    const fields = data.settings.fields;
+    const targetConfig = fields[slug] ?? [];
 
-      if (Array.isArray(targetConfig) && targetConfig.length > 0) {
-        setFieldConfigQuery({});
-        setFieldSettingsConfig(targetConfig);
-        setActiveSettings("field");
-        setCanvasFieldSelected(null);
-      }
-    },
-    [data.settings.fields],
-  );
+    if (Array.isArray(targetConfig) && targetConfig.length > 0) {
+      setFieldConfigQuery({});
+      setFieldSettingsConfig(targetConfig);
+      setActiveSettings("field");
+      setCanvasFieldSelected(null);
+    }
+  };
 
-  const handleAddFieldToCanvas = useCallback(() => {
+  const handleAddFieldToCanvas = () => {
     const fields =
       fieldSettingsConfig?.map((el) => ({
         ...el,
@@ -239,9 +233,9 @@ export default function useFromBuilder(data: FormBuilder) {
     };
 
     setCanvasFields((prev) => [...prev, canvasFieldObject]);
-  }, [fieldConfigQuery, fieldSettingsConfig, selectedDefaultFieldConfig]);
+  };
 
-  const handleUpdateFieldInCanvas = useCallback(() => {
+  const handleUpdateFieldInCanvas = () => {
     setCanvasFields((prev) => {
       return prev.map((item) => {
         if (item.id !== canvasFieldSelected) return item;
@@ -255,64 +249,61 @@ export default function useFromBuilder(data: FormBuilder) {
         };
       });
     });
-  }, [fieldConfigQuery, canvasFieldSelected]);
+  };
 
-  const handleSelectCanvasField = useCallback(
-    (canvasEntry: CanvasFieldInstance) => {
-      if (!canvasEntry) return;
+  const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
+    if (!canvasEntry) return;
 
-      const fields = canvasEntry.fields;
+    const fields = canvasEntry.fields;
 
-      const queryObj: Record<string, string | boolean | string[] | number> = {};
+    const queryObj: Record<string, string | boolean | string[] | number> = {};
 
-      for (const el of fields) {
-        const name = el.name ?? null;
-        const value = el.value ?? null;
+    for (const el of fields) {
+      const name = el.name ?? null;
+      const value = el.value ?? null;
 
-        if (name && value) queryObj[name] = value;
-      }
+      if (name && value) queryObj[name] = value;
+    }
 
-      setFieldConfigQuery(queryObj);
-      setCanvasFieldSelected(canvasEntry.id);
-    },
-    [],
-  );
-  const updateCanvasFieldValue = useCallback(
-    (id: string, value: boolean | string | string[] | number) => {
-      setCanvasFields((prev) => {
-        if (!prev) return prev;
+    setFieldConfigQuery(queryObj);
+    setCanvasFieldSelected(canvasEntry.id);
+  };
 
-        return prev.map((item) => {
-          if (item.id !== id) return item;
+  const updateCanvasFieldValue = (
+    id: string,
+    value: boolean | string | string[] | number,
+  ) => {
+    setCanvasFields((prev) => {
+      if (!prev) return prev;
 
-          if (item.type === "checkboxGroup") {
-            const current = Array.isArray(item.value) ? item.value : [];
+      return prev.map((item) => {
+        if (item.id !== id) return item;
 
-            return {
-              ...item,
-              value: current.includes(String(value))
-                ? current.filter((v) => v !== value)
-                : [...current, String(value)],
-            };
-          }
+        if (item.type === "checkboxGroup") {
+          const current = Array.isArray(item.value) ? item.value : [];
 
           return {
             ...item,
-            value,
+            value: current.includes(String(value))
+              ? current.filter((v) => v !== value)
+              : [...current, String(value)],
           };
-        });
-      });
-    },
-    [],
-  );
+        }
 
-  const updateFormSetting = useCallback(() => {
+        return {
+          ...item,
+          value,
+        };
+      });
+    });
+  };
+
+  const updateFormSetting = () => {
     setSelectedFormSettings((prev) => ({
       ...prev,
       ...formConfigQuery,
     }));
-  }, [formConfigQuery]);
-
+  };
 
   return {
     dragOverIdRef,

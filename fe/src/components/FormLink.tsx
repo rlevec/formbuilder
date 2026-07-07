@@ -1,13 +1,14 @@
-import { memo } from "react";
 import type { FormLink as LinkTypes } from "../../types";
+
 import { Link } from "react-router-dom";
+
 import styles from "../styles/formLink.module.css";
 
 interface Props {
   link: LinkTypes;
 }
 
-const FormLink = ({ link }: Props) => {
+export default function FormLink({ link }: Props) {
   return (
     <li className={styles.item}>
       <span>{link.label}</span>
@@ -18,7 +19,3 @@ const FormLink = ({ link }: Props) => {
     </li>
   );
 };
-
-const MemoizedFormLink = memo(FormLink);
-
-export default MemoizedFormLink;

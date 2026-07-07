@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import type { FormField, HandleFieldUpdateParams} from "../../types";
 
 import TextField from "./TextField";
@@ -25,11 +23,11 @@ const getValue = (
   return map[key];
 };
 
-const FieldSettings = ({
+export default function FieldSettings({
   handleFieldUpdate,
   fieldConfigQuery,
   fieldSettingsConfig
-}: Props) => {
+}: Props) {
 
   if(!fieldSettingsConfig) return null;
 
@@ -107,5 +105,3 @@ const FieldSettings = ({
     </form>
   );
 };
-
-export default memo(FieldSettings);

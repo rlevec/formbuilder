@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import styles from "../styles/textareaField.module.css";
 
 import type { FormField, FieldUpdateParams } from "../../types";
@@ -11,7 +9,7 @@ interface Props {
   onChange: (params: FieldUpdateParams) => void;
 }
 
-export const TextareaField = ({ field, error, onChange, value }: Props) => {
+export default function TextareaField({ field, error, onChange, value }: Props) {
   const errorId = field.name ? `${field.name}-error` : undefined;
 
   return (
@@ -51,7 +49,3 @@ export const TextareaField = ({ field, error, onChange, value }: Props) => {
     </div>
   );
 };
-
-const MemoizedTextareaField = memo(TextareaField);
-
-export default MemoizedTextareaField;

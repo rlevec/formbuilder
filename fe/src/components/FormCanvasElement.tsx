@@ -1,5 +1,3 @@
-import { memo, useCallback, useMemo } from "react";
-
 import styles from "../styles/formCanvasElement.module.css";
 
 import type { FormField, HTMLInputType } from "../../types";
@@ -22,6 +20,22 @@ type CanvasFieldInstance = {
   value: string | boolean | string[] | number;
 };
 
+interface CanvasFieldStyles {
+  backgroundColor?: string;
+  textColor?: string;
+  fontWeight?: string | number;
+  padding?: string;
+  borderRadius?: string;
+  border?: string;
+  labelMargin?: string;
+  labelTextColor?: string;
+  labelFontWeight?: string | number;
+  fieldFontSize?: string;
+  labelFontSize?: string;
+  focusedLabelColor?: string;
+  focusedFieldBorderColor?: string;
+}
+
 interface Props {
   canvasFieldSelected: string | null;
   canvasEntry: CanvasFieldInstance;
@@ -35,7 +49,7 @@ interface Props {
   ) => void;
 }
 
-const FormCanvasElement = ({
+export default function FormCanvasElement({
   canvasEntry,
   canvasFieldSelected,
   handleDragStart,
@@ -43,7 +57,7 @@ const FormCanvasElement = ({
   handleDragEnd,
   handleSelectCanvasField,
   updateCanvasFieldValue,
-}: Props) => {
+}: Props) {
   const { fields = [], type = "", id = "" } = canvasEntry || {};
 
   const widthField = fields.find((field) => field.name === "width");
@@ -52,27 +66,34 @@ const FormCanvasElement = ({
 
   console.log("canvasEtnry", canvasEntry);
 
-  const getField = useCallback((name: string) => {
-    return canvasEntry.fields.find((el) => el.name === name)?.value ?? null;
-  }, [canvasEntry])
+  const getString = (name: string): string | undefined => {
+  const value = canvasEntry.fields.find((el) => el.name === name)?.value;
+  return typeof value === "string" ? value : undefined;
+};
 
-  const fieldStyles = useMemo(() => {
-  return {
-    backgroundColor: String(getField("fieldBackgroundColor")),
-    textColor: getField("fieldTextColor"),
-    fontWeight: getField("fieldFontWeight"),
-    padding: getField("fieldPadding"),
-    borderRadius: getField("fieldBorderRadius"),
-    border: getField("fieldBorder"),
-    labelMargin: getField("labelMargin"),
-    labelTextColor: getField("labelTextColor"),
-    labelFontWeight: getField("labelFontWeight"),
-    fieldFontSize: getField("fieldFontSize"),
-    labelFontSize: getField("labelFontSize"),
-    focusedLabelColor: getField("focusedLabelColor"),
-    focusedFieldBorderColor: getField("focusedFieldBorderColor")
-  };
-}, [getField]);
+const getStringOrNumber = (name: string): string | number | undefined => {
+  const value = canvasEntry.fields.find((el) => el.name === name)?.value;
+
+  return typeof value === "string" || typeof value === "number"
+    ? value
+    : undefined;
+};
+
+const fieldStyles: CanvasFieldStyles = {
+  backgroundColor: getString("fieldBackgroundColor"),
+  textColor: getString("fieldTextColor"),
+  fontWeight: getStringOrNumber("fieldFontWeight"),
+  padding: getString("fieldPadding"),
+  borderRadius: getString("fieldBorderRadius"),
+  border: getString("fieldBorder"),
+  labelMargin: getString("labelMargin"),
+  labelTextColor: getString("labelTextColor"),
+  labelFontWeight: getStringOrNumber("labelFontWeight"),
+  fieldFontSize: getString("fieldFontSize"),
+  labelFontSize: getString("labelFontSize"),
+  focusedLabelColor: getString("focusedLabelColor"),
+  focusedFieldBorderColor: getString("focusedFieldBorderColor"),
+};
 
   return (
     <div
@@ -259,7 +280,3 @@ const FormCanvasElement = ({
     </div>
   );
 };
-
-const MemoizedFormCanvasElement = memo(FormCanvasElement);
-
-export default MemoizedFormCanvasElement;

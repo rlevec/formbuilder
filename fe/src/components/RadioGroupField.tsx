@@ -1,4 +1,3 @@
-import { memo } from "react";
 import type { FormField, FieldUpdateParams } from "../../types";
 import styles from "../styles/radioGroupField.module.css";
 
@@ -9,7 +8,7 @@ interface Props {
   onSelect: (params: FieldUpdateParams) => void;
 }
 
-const RadioGroupField = ({ field, error, onSelect, value }: Props) => {
+export default function RadioGroupField ({ field, error, onSelect, value }: Props) {
   const options = Array.isArray(field.options) ? field.options : [];
   const groupName = field.name || "radio-group";
 
@@ -56,6 +55,3 @@ const RadioGroupField = ({ field, error, onSelect, value }: Props) => {
 </div>
   );
 };
-
-const MemoizedRadioGroupField = memo(RadioGroupField);
-export default MemoizedRadioGroupField;

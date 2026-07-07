@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import styles from "../styles/leftPanel.module.css";
 
 import SearchField from "./SearchField";
@@ -9,64 +7,19 @@ import { useSearch } from "../hooks/useSearch";
 
 import type { FormBuilderField, FormField } from "../../types";
 
-import {
-  Type,
-  AlignLeft,
-  Hash,
-  Calendar,
-  Mail,
-  Phone,
-  Image,
-  Paperclip,
-  ToggleLeft,
-  ChevronDown,
-  CheckSquare,
-  ListChecks,
-  SlidersHorizontal,
-  Star,
-  SeparatorHorizontal,
-  Heading,
-  TextCursorInput,
-  Columns3,
-} from "lucide-react";
-
+import { FIELD_ICONS } from "../lib/utils";
 interface Props {
   inputFields: FormBuilderField[];
   fieldTypes: FormBuilderField[];
   handleSelectDefaultFieldConfig: ({slug, id}: {slug: string, id: string}) => void;
   selectedDefaultFieldConfigId: string | FormField[] | null;
 }
-
-export const FIELD_ICONS = {
-  shortText: Type,
-  paragraph: AlignLeft,
-  number: Hash,
-  date: Calendar,
-  email: Mail,
-  phone: Phone,
-  imageUpload: Image,
-  fileUpload: Paperclip,
-  toggle: ToggleLeft,
-  dropdown: ChevronDown,
-  checkbox: CheckSquare,
-  checkboxGroup: ListChecks,
-  radioGroup: ListChecks,
-  rating: Star,
-  range: SlidersHorizontal,
-  heading: Heading,
-  paragraphText: AlignLeft,
-  divider: SeparatorHorizontal,
-  section: TextCursorInput,
-  columns: Columns3,
-  default: Type,
-} as const;
-
-const LeftPanel = ({
+export default function LeftPanel({
   inputFields,
   fieldTypes,
   handleSelectDefaultFieldConfig,
   selectedDefaultFieldConfigId
-}: Props) => {
+}: Props) {
   
   const { search, setSearch, results } = useSearch({
     delay: 250,
@@ -129,5 +82,3 @@ const LeftPanel = ({
     </main>
   );
 };
-
-export default memo(LeftPanel);

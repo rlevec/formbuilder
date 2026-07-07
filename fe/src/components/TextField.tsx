@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { useState } from "react";
 
 import type { FormField, FieldUpdateParams } from "../../types";
 
@@ -12,13 +12,29 @@ import type { ForwardRefExoticComponent } from "react";
 
 import Button from "./Button";
 
+interface CanvasFieldStyles {
+  backgroundColor?: string;
+  textColor?: string;
+  fontWeight?: string | number;
+  padding?: string;
+  borderRadius?: string;
+  border?: string;
+  labelMargin?: string;
+  labelTextColor?: string;
+  labelFontWeight?: string | number;
+  fieldFontSize?: string;
+  labelFontSize?: string;
+  focusedLabelColor?: string;
+  focusedFieldBorderColor?: string;
+}
+
 interface Props {
   field: FormField;
   value: string;
   error?: string;
   onChange: (params: FieldUpdateParams) => void;
   isCanvas?: boolean;
-  canvasStyles?: Record<string, string | null>;
+  canvasStyles?: CanvasFieldStyles;
 }
 
 const FIELD_ICONS: Record<
@@ -29,14 +45,14 @@ const FIELD_ICONS: Record<
   password: Lock,
 };
 
-const TextField = ({
+export default function TextField({
   field,
   value,
   error,
   onChange,
   isCanvas,
   canvasStyles,
-}: Props) => {
+}: Props) {
   const [passwordFieldType, setPasswordFieldType] = useState<
     "password" | "text"
   >("password");
@@ -46,33 +62,25 @@ const TextField = ({
   const isPassword =
     field.isPassword || field.name?.includes?.("password") || false;
 
-  const validators = useMemo(() => {
-    if (!Array.isArray(field.separateValidators)) return [];
+  const validators = Array.isArray(field.separateValidators)
+    ? field.separateValidators.map((v) => {
+        const isEmpty = !value || value.length === 0;
+        const regex = new RegExp(v.regex);
 
-    const isEmpty = !value || value.length === 0;
+        return {
+          message: v.message,
+          valid: !isEmpty && regex.test(value),
+          neutral: isEmpty,
+        };
+      })
+    : [];
 
-    return field.separateValidators.map((v) => {
-      const regex = new RegExp(v.regex);
-
-      return {
-        message: v.message,
-        valid: !isEmpty && regex.test(value),
-        neutral: isEmpty,
-      };
-    });
-  }, [field.separateValidators, value]);
-
-  const FieldIcon = useMemo(
-    () => (field.name ? FIELD_ICONS[field.name] : null),
-    [field.name],
-  );
+  const FieldIcon = field.name ? FIELD_ICONS[field.name] : null;
 
   const showPills = !value || !!error;
 
   const errorId = field.name ? `${field.name}-error` : undefined;
   const pillsId = field.name ? `${field.name}-pills` : undefined;
-
-  console.log("canvasStyles", canvasStyles)
 
   return (
     <div
@@ -116,12 +124,8 @@ const TextField = ({
         )}
 
         <input
-          onFocus={() =>
-            setCanvasFieldInFocus((prev) => (isCanvas ? !prev : false))
-          }
-          onBlur={() =>
-            setCanvasFieldInFocus((prev) => (isCanvas ? !prev : false))
-          }
+          onFocus={() => isCanvas && setCanvasFieldInFocus(true)}
+          onBlur={() => isCanvas && setCanvasFieldInFocus(false)}
           style={
             isCanvas
               ? {
@@ -208,5 +212,3 @@ const TextField = ({
     </div>
   );
 };
-
-export default memo(TextField);

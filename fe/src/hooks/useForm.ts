@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState } from "react";
 
 import type { FormEvent } from "react";
 
@@ -12,7 +12,6 @@ import type { FormData, Response, FieldUpdateParams } from "../../types";
 
 import { buildZodSchema } from "../validators/buildZodSchema";
 
-
 const URL_MAP: Record<string, string> = {
   login: "/api/auth/login",
   registration: "/api/auth/register",
@@ -23,12 +22,18 @@ const ROUTE_MAP: Record<string, string> = {
   login: "/",
 };
 
-export default function useForm({ data, type }: { data: FormData; type: string }) {
+export default function useForm({
+  data,
+  type,
+}: {
+  data: FormData;
+  type: string;
+}) {
   const [query, setQuery] = useState<Record<string, string | boolean>>({});
   const [fieldError, setFieldError] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string>("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submitMutation = useCustomMutation({
     fetchParams: {
@@ -40,7 +45,7 @@ export default function useForm({ data, type }: { data: FormData; type: string }
         const targetRoute = ROUTE_MAP[type];
 
         if (targetRoute) {
-          navigate(targetRoute, {replace: true})
+          navigate(targetRoute, { replace: true });
         }
       },
       onError: (data: Response) => {
@@ -50,61 +55,45 @@ export default function useForm({ data, type }: { data: FormData; type: string }
     },
   });
 
-  const isFormValid = useMemo(() => {
-    const fields = data.fields;
+const isFormValid =
+  data.fields.length === Object.keys(query).length &&
+  !Object.values(fieldError).some(Boolean);
 
-    const queryValues = Object.values(query);
-    const fieldErrorValues = Object.values(fieldError);
+  const handleChange = ({ fieldName, value, field }: FieldUpdateParams) => {
+    setQuery((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
 
-    const lengthsMatch =
-      fields.length === queryValues.length &&
-      fields.length === fieldErrorValues.length;
+    let error = "";
 
-    const isQueryInvalid = Object.values(queryValues).some(
-      (queryVal) => !Boolean(queryVal),
-    );
-    const isFieldInError = Object.values(fieldErrorValues).some(
-      (fieldErrorVal) => Boolean(fieldErrorVal),
-    );
+    if (field.required && !value) {
+      error = field.requiredMessage ?? "";
+    }
 
-    return lengthsMatch && !isQueryInvalid && !isFieldInError;
-  }, [data.fields, query, fieldError]);
+    if (field.separateValidators && !error) {
+      const failed = field.separateValidators.find(
+        ({ regex }) => !new RegExp(regex).test(String(value)),
+      );
 
+      if (failed) error = failed.message;
+    }
 
-  const handleChange =  useCallback(({ fieldName, value, field }: FieldUpdateParams) => {
-      setQuery(prev => ({
-        ...prev,
-        [fieldName]: value,
-      }));
-  
-      let error = "";
-  
-      if (field.required && !value) {
-        error = field.requiredMessage ?? "";
+    if (field.validator && !field.separateValidators?.length && !error) {
+      const regex = new RegExp(field.validator);
+      if (!regex.test(String(value))) {
+        error = field.validationMessage ?? "";
       }
-  
-      if (field.separateValidators && !error) {
-        const failed = field.separateValidators.find(
-          ({ regex }) => !new RegExp(regex).test(String(value)),
-        );
-  
-        if (failed) error = failed.message;
-      }
-  
-      if (field.validator && !field.separateValidators?.length && !error) {
-        const regex = new RegExp(field.validator);
-        if (!regex.test(String(value))) {
-          error = field.validationMessage ?? "";
-        }
-      }
-  
-      setFieldError(prev => ({
-        ...prev,
-        [fieldName]: error,
-      }));
-    }, []);
+    }
+
+    setFieldError((prev) => ({
+      ...prev,
+      [fieldName]: error,
+    }));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    console.log("trigger")
     event.preventDefault();
 
     setFormError("");
@@ -140,6 +129,6 @@ export default function useForm({ data, type }: { data: FormData; type: string }
     setFormError,
     isFormValid,
     handleChange,
-    handleSubmit
-  }
+    handleSubmit,
+  };
 }

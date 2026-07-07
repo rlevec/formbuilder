@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import Button from "./Button";
 import FieldSettings from "./FieldSettings";
 import FormSettings from "./FormSettings";
@@ -26,7 +24,7 @@ interface Props {
   updateFormSetting: () => void;
 }
 
-const RightPanel = ({
+export default function RightPanel({
   activeSettings,
   handleFieldUpdate,
   fieldConfigQuery,
@@ -38,7 +36,7 @@ const RightPanel = ({
   canvasFieldSelected,
   handleUpdateFieldInCanvas,
   updateFormSetting
-}: Props) => {
+}: Props) {
 
 
   return (
@@ -105,5 +103,3 @@ const RightPanel = ({
     </aside>
   );
 };
-
-export default memo(RightPanel);

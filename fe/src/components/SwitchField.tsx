@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import type { FormField, SwitchParams } from "../../types";
 
 import styles from "../styles/switchField.module.css";
@@ -12,7 +10,7 @@ interface Props {
   value: boolean;
 }
 
-export const Switch = ({ field, onToggle, value }: Props) => {
+export default function Switch({ field, onToggle, value }: Props) {
   const isChecked = Boolean(value);
 
   return (
@@ -48,7 +46,3 @@ export const Switch = ({ field, onToggle, value }: Props) => {
     </div>
   );
 };
-
-const MemoizedSwitch = memo(Switch);
-
-export default MemoizedSwitch;

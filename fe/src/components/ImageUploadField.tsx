@@ -1,11 +1,5 @@
-import { memo } from "react"
-
-export const ImageUploadField = () => {
+export default function ImageUploadField() {
     return (
         <div>IMAGE UPLOAD FIELD</div>
     )
 }
-
-const MemoizedImageUploadField = memo(ImageUploadField)
-
-export default MemoizedImageUploadField

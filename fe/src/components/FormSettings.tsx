@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import type { FormBuilderSettingsField } from "../../types";
 
 import TextField from "./TextField";
@@ -25,11 +23,11 @@ const getValue = (map: Record<string, string | boolean>, key?: string) => {
   return map[key];
 };
 
-const FormSettings = ({
+export default function FormSettings({
   formFields,
   formConfigQuery,
   handleFieldUpdate,
-}: Props) => {
+}: Props) {
   if (!formFields) return;
 
   return (
@@ -101,5 +99,3 @@ const FormSettings = ({
     </form>
   );
 };
-
-export default memo(FormSettings);
