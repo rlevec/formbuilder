@@ -1,0 +1,80 @@
+.wrapper {
+  gap: var(--space-2);
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+}
+
+.ratingContainer {
+  display: flex;
+  height: auto;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+}
+
+.active_hearts svg {
+  color: var(--heart);
+  fill: var(--heart-bg);
+}
+
+.active_stars svg {
+  color: var(--star);
+  fill: var(--star-bg);
+}
+
+.active_emoji_1 svg {
+  color: var(--text-primary);
+  fill: var(--rating-1);
+}
+
+.active_emoji_2 svg {
+  color: var(--text-primary);
+  fill: var(--rating-2);
+}
+
+.active_emoji_3 svg {
+  color: var(--text-primary);
+  fill: var(--rating-3);
+}
+.active_emoji_4 svg {
+  color: var(--text-primary);
+  fill: var(--rating-4);
+}
+
+.active_emoji_5 svg {
+  color: var(--text-primary);
+  fill: var(--rating-5);
+}
+
+.active_emoji_6 svg {
+  color: var(--text-primary);
+  fill: var(--rating-6);
+}
+.active_emoji_7 svg {
+  color: var(--text-primary);
+  fill: var(--rating-7);
+}
+
+.active_emoji_8 svg {
+  color: var(--text-primary);
+  fill: var(--rating-8);
+}
+
+.active_emoji_9 svg {
+  color: var(--text-primary);
+  fill: var(--rating-9);
+}
+
+.active_emoji_10 svg {
+  color: var(--text-primary);
+  fill: var(--rating-10);
+}

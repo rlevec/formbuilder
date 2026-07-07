@@ -1,0 +1,92 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.options {
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all .2s;
+  display: flex;
+}
+
+.optionWrapper {
+  position: relative;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* pill style (matches your system feel) */
+.pill {
+  font-size: var(--text-xs);
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.pill:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* checked state */
+.input:checked + .pill {
+  background: var(--surface-muted);
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* focus via keyboard */
+.input:focus-visible + .pill {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* error */
+.errorText {
+  font-size: var(--text-xs);
+  color: var(--error);
+}

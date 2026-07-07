@@ -73,21 +73,21 @@ export const loginFormdata:FormData = {
         frontendSlug: "register",
         label: "Don't have an account?",
         labelWithLink: "Register",
-        route: "/auth/register"
+        route: "/registration"
       },
       {
         id: 2,
         frontendSlug: "resend-code",
         label: "Didn't receive activation code?",
         labelWithLink: "Resend it",
-        route: "/auth/resend_activation"
+        route: "resend_activation"
       },
       {
         id: 3,
         frontendSlug: "forgot-password",
         label: "Forgot your password?",
         labelWithLink: "Reset it",
-        route: "/auth/forgot_password"
+        route: "/forgot_password"
       },
     ]
   };

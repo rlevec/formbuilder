@@ -1,0 +1,35 @@
+.field {
+  width: 100%;
+  cursor: pointer;
+
+  border: 1px solid transparent;
+
+  background: var(--surface);
+
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.field:hover {
+  border-color: var(--border);
+  background: var(--surface-muted);
+}
+
+.full {
+  grid-column: span 2;
+}
+
+.half {
+  grid-column: span 1;
+}
+
+.selected {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 4px var(--focus-ring),
+    0 10px 30px rgba(17, 24, 39, 0.08);
+}

@@ -46,7 +46,7 @@ export const registerFormdata: FormData = {
         frontendSlug: "login",
         label: "Already have an account?",
         labelWithLink: "Log In",
-        route: "/auth/login"
+        route: "/login"
       }
     ]
   };

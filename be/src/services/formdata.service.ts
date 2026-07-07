@@ -6,7 +6,7 @@ import { throwNewError } from "../utils/global.utils";
 
 const FORMDATA_MAP = {
     login: loginFormdata,
-    register: registerFormdata,
+    registration: registerFormdata,
     formbuilder: formbuilder
 } as const;
 

@@ -1,0 +1,174 @@
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
+  grid-template-rows: 64px 1fr;
+
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  grid-row: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 var(--space-6);
+
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.logoArea {
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.topbarContent {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.leftPanel {
+  grid-column: 1;
+  grid-row: 2;
+
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+
+  padding: var(--space-4);
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.leftPanel::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.leftPanel::-webkit-scrollbar-track {
+  background: var(--surface-muted);
+}
+
+.leftPanel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--surface-muted);
+  cursor: pointer;
+}
+
+.leftPanel::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+
+.toolItem {
+  padding: var(--space-2) var(--space-3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.toolItem:hover {
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+
+.canvas {
+  grid-column: 2;
+  grid-row: 2;
+
+  background: var(--surface-muted);
+
+  padding: var(--space-6);
+  overflow: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.canvasInner {
+  width: 100%;
+  max-width: 720px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  padding: var(--space-6);
+
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.rightPanel {
+  grid-column: 3;
+  grid-row: 2;
+
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+
+  padding: var(--space-4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.formLabel {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.formInput {
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: var(--text-sm);
+  outline: none;
+  background: var(--surface);
+}
+
+.formInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}

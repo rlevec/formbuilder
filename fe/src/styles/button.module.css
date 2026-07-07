@@ -1,0 +1,97 @@
+.primary {
+  background: var(--primary);
+  color: white;
+  border: 1px solid var(--primary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.primary:active {
+  transform: scale(0.98);
+}
+
+.primary:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.secondary:hover {
+  background: var(--surface-muted);
+}
+
+.secondary:active {
+  transform: scale(0.98);
+}
+
+.secondary:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.ghost {
+  background: transparent;
+  color: var(--primary);
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ghost:hover {
+  background: var(--primary-light);
+}
+
+.ghost:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.danger {
+  background: var(--error);
+  color: white;
+  border: 1px solid var(--error);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.danger:hover {
+  filter: brightness(0.9);
+}
+
+.danger:active {
+  transform: scale(0.98);
+}
+
+.danger:focus-visible {
+  outline: 3px solid rgba(239, 68, 68, 0.3);
+  outline-offset: 2px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

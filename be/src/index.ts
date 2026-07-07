@@ -55,9 +55,9 @@ async function startServer() {
   next();
     });
 
-    app.use("/formdata", formdataRoutes);
-    app.use("/auth", authRoutes);
-    app.use("/formbuilder", formbuilderRoutes)
+    app.use("/api/formdata", formdataRoutes);
+    app.use("/api/auth", authRoutes);
+    app.use("/api/formbuilder", formbuilderRoutes)
 
     app.use(errorMiddleware);
 

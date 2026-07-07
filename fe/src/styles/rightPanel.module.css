@@ -1,0 +1,89 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0; 
+    flex: 1;
+}
+
+.settings {
+    width: 100%;
+    flex: 0 0 auto;
+    height: auto;
+    padding: var(--space-1);
+    background-color: var(--surface-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    border-radius: 8px;
+    margin-bottom: var(--space-4);
+}
+
+.settingButton {
+    width: 100%;
+    height: auto;
+    transition: unset;
+}
+
+.settingButton:hover {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.settingsButtonInactive,
+.settingsButtonInactive:hover
+{
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.settingButton:active {
+    transform: unset;
+}
+
+.settingButton:focus-visible {
+    outline: unset;
+    outline-offset: unset;
+}
+
+
+.formFielsWrapper {
+  flex: 1;
+  min-height: 0; 
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+
+.formFielsWrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.formFielsWrapper::-webkit-scrollbar-track {
+  background: var(--surface-muted);
+}
+
+.formFielsWrapper::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--surface-muted);
+  cursor: pointer;
+}
+
+.formFielsWrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.panelFooter {
+  flex: 0 0 auto;
+  padding-top: var(--space-4);
+}
+
+.panelFooterButton {
+  width: 100%;
+}
