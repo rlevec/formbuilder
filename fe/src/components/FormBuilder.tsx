@@ -42,6 +42,8 @@ export default function FormBuilder({ data }: Props) {
     selectedFormSettings
   } = useFromBuilder(data)
 
+  console.log("canvasFields", canvasFields)
+
   return (
     <main className={styles.layout}>
       <header className={styles.topbar}>

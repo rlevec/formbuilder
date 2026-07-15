@@ -5,6 +5,7 @@ import { generateField } from "../utils/generateField.utils";
 import crypto from "crypto";
 
 type FieldType =
+  | "input"
   | "shortText"
   | "paragraph"
   | "dropdown"
@@ -34,16 +35,6 @@ export const generateBaseFieldProperties = ({
   const fields: FormField[] = [
     generateField({
       id: crypto.randomUUID(),
-      order: 1,
-      name: "label",
-      label: "Field Label",
-      type: "text",
-      inputType: "text",
-      placeholder: "Enter field label",
-    }),
-
-    generateField({
-      id: crypto.randomUUID(),
       order: 2,
       name: "description",
       label: "Field Description",
@@ -69,6 +60,25 @@ export const generateBaseFieldProperties = ({
       type: "select",
       inputType: "radioGroup",
       options: ["half", "full"],
+    }),
+    generateField({
+      id: crypto.randomUUID(),
+      order: 5,
+      name: "fieldHeight",
+      label: "Field Height",
+      type: "text",
+      inputType: "text",
+      placeholder: "46px",
+      valueType: "string",
+    }),
+    generateField({
+      id: crypto.randomUUID(),
+      order: 1,
+      name: "label",
+      label: "Field Label",
+      type: "text",
+      inputType: "text",
+      placeholder: "Enter field label",
     }),
 
     generateField({
@@ -224,6 +234,56 @@ export const generateBaseFieldProperties = ({
   ];
 
   switch (type) {
+    case "input": {
+      fields.push(
+        generateField({
+          id: crypto.randomUUID(),
+          order: 6,
+          name: "inputType",
+          label: "Input Type",
+          type: "select",
+          inputType: "select",
+          placeholder: "Select input type",
+          options: ["text", "number", "email", "phone", "date"]
+        }),
+          generateField({
+          id: crypto.randomUUID(),
+          order: 6,
+          name: "maxLength",
+          label: "Max Length",
+          type: "number",
+          inputType: "text",
+          placeholder: "Enter maximum length",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "placeholder",
+          label: "Placeholder",
+          type: "text",
+          inputType: "text",
+          placeholder: "Enter placeholder text",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 5,
+          name: "minLength",
+          label: "Min Length",
+          type: "number",
+          inputType: "text",
+          placeholder: "Enter minimum length",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 6,
+          name: "maxLength",
+          label: "Max Length",
+          type: "number",
+          inputType: "text",
+          placeholder: "Enter maximum length",
+        }),
+      );
+    }
     case "number":
       fields.push(
         generateField({
@@ -556,6 +616,10 @@ export const generateBaseFieldProperties = ({
 const fieldSchemas = {
   shortText: generateBaseFieldProperties({
     type: "shortText",
+  }),
+
+    input: generateBaseFieldProperties({
+    type: "input",
   }),
 
   paragraph: generateBaseFieldProperties({
@@ -1002,22 +1066,29 @@ const buttonBorderField = generateField({
 
 const fieldTypes = [
   {
+
     id: crypto.randomUUID(),
     isInput: true,
     type: "search",
     placeholder: "Search fields...",
   },
-
+    {
+    id: crypto.randomUUID(),
+    frontendSlug: "input",
+    title: "Input",
+  },
+    {
+    id: crypto.randomUUID(),
+    frontendSlug: "paragraph",
+    title: "Paragraph",
+  },
+      /*
   {
     id: crypto.randomUUID(),
     frontendSlug: "shortText",
     title: "Short Text",
   },
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "paragraph",
-    title: "Paragraph",
-  },
+
   {
     id: crypto.randomUUID(),
     frontendSlug: "number",
@@ -1038,6 +1109,7 @@ const fieldTypes = [
     frontendSlug: "date",
     title: "Date",
   },
+  */
   {
     id: crypto.randomUUID(),
     frontendSlug: "dropdown",
@@ -1126,12 +1198,13 @@ export const formbuilder: FormBuilder = {
       ],
     },
     fields: {
-      shortText: fieldSchemas.shortText,
+      //shortText: fieldSchemas.shortText,
+      input: fieldSchemas.input,
       paragraph: fieldSchemas.paragraph,
-      number: fieldSchemas.number,
-      email: fieldSchemas.email,
-      phone: fieldSchemas.phone,
-      date: fieldSchemas.date,
+      //number: fieldSchemas.number,
+      //email: fieldSchemas.email,
+      //phone: fieldSchemas.phone,
+      //date: fieldSchemas.date,
       dropdown: fieldSchemas.dropdown,
       radioGroup: fieldSchemas.radioGroup,
       checkbox: fieldSchemas.checkbox,

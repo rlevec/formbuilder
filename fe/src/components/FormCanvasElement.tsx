@@ -67,33 +67,33 @@ export default function FormCanvasElement({
   console.log("canvasEtnry", canvasEntry);
 
   const getString = (name: string): string | undefined => {
-  const value = canvasEntry.fields.find((el) => el.name === name)?.value;
-  return typeof value === "string" ? value : undefined;
-};
+    const value = canvasEntry.fields.find((el) => el.name === name)?.value;
+    return typeof value === "string" ? value : undefined;
+  };
 
-const getStringOrNumber = (name: string): string | number | undefined => {
-  const value = canvasEntry.fields.find((el) => el.name === name)?.value;
+  const getStringOrNumber = (name: string): string | number | undefined => {
+    const value = canvasEntry.fields.find((el) => el.name === name)?.value;
 
-  return typeof value === "string" || typeof value === "number"
-    ? value
-    : undefined;
-};
+    return typeof value === "string" || typeof value === "number"
+      ? value
+      : undefined;
+  };
 
-const fieldStyles: CanvasFieldStyles = {
-  backgroundColor: getString("fieldBackgroundColor"),
-  textColor: getString("fieldTextColor"),
-  fontWeight: getStringOrNumber("fieldFontWeight"),
-  padding: getString("fieldPadding"),
-  borderRadius: getString("fieldBorderRadius"),
-  border: getString("fieldBorder"),
-  labelMargin: getString("labelMargin"),
-  labelTextColor: getString("labelTextColor"),
-  labelFontWeight: getStringOrNumber("labelFontWeight"),
-  fieldFontSize: getString("fieldFontSize"),
-  labelFontSize: getString("labelFontSize"),
-  focusedLabelColor: getString("focusedLabelColor"),
-  focusedFieldBorderColor: getString("focusedFieldBorderColor"),
-};
+  const fieldStyles: CanvasFieldStyles = {
+    backgroundColor: getString("fieldBackgroundColor"),
+    textColor: getString("fieldTextColor"),
+    fontWeight: getStringOrNumber("fieldFontWeight"),
+    padding: getString("fieldPadding"),
+    borderRadius: getString("fieldBorderRadius"),
+    border: getString("fieldBorder"),
+    labelMargin: getString("labelMargin"),
+    labelTextColor: getString("labelTextColor"),
+    labelFontWeight: getStringOrNumber("labelFontWeight"),
+    fieldFontSize: getString("fieldFontSize"),
+    labelFontSize: getString("labelFontSize"),
+    focusedLabelColor: getString("focusedLabelColor"),
+    focusedFieldBorderColor: getString("focusedFieldBorderColor"),
+  };
 
   return (
     <div
@@ -121,7 +121,7 @@ const fieldStyles: CanvasFieldStyles = {
           }}
         />
       )}
-      {["shortText", "number", "email", "date", "phone"].includes(type) && (
+      {type === "input" && (
         <TextField
           isCanvas={true}
           value={(canvasEntry.value as string) ?? ""}
@@ -139,12 +139,10 @@ const fieldStyles: CanvasFieldStyles = {
               (canvasEntry.fields.find((el) =>
                 ["maxValue", "maxDate"].includes(el.name as string),
               )?.value as string | number) || "",
-            type:
-              type === "shortText"
-                ? "text"
-                : type === "phone"
-                  ? "tel"
-                  : (type as HTMLInputType),
+
+            type: String(
+              canvasEntry.fields.find((el) => el.name === "inputType")?.value ?? "",
+            ) as HTMLInputType ,
             placeholder: String(
               canvasEntry.fields.find((el) => el.name === "placeholder")
                 ?.value ?? "",
@@ -279,4 +277,4 @@ const fieldStyles: CanvasFieldStyles = {
       {type === "fileUpload" && <FileUploadField />}
     </div>
   );
-};
+}
