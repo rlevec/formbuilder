@@ -61,12 +61,6 @@
   color: var(--text-muted);
 }
 
-.canvasInput:focus,
-.canvasInput:focus-within {
-  box-shadow: none;
-  outline: none;
-}
-
 .icon {
   flex: 0 0 24px;
   width: 24px;

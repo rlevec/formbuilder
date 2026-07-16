@@ -1,6 +1,6 @@
 import type { FormField, HandleFieldUpdateParams} from "../../types";
 
-import TextField from "./TextField";
+import TextField from "./InputField";
 import SwitchField from "./SwitchField";
 import TextareaField from "./TextareaField";
 import SelectField from "./SelectField";

@@ -61,6 +61,7 @@ export default function OptionsBuilderField({ field, options, error, onClick }: 
             aria-invalid={!!error}
           />
           <Button
+            visual="success"
             Icon={Plus}
             type="button"
             onClick={handleAdd}
@@ -68,7 +69,6 @@ export default function OptionsBuilderField({ field, options, error, onClick }: 
             aria-label="Add option"
           />
         </div>
-
         {Array.isArray(options) && options.length > 0 && (
           <ul className={styles.optionsWrapper}>
             {options.map((option, idx) => (

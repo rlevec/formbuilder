@@ -63,16 +63,6 @@ export const generateBaseFieldProperties = ({
     }),
     generateField({
       id: crypto.randomUUID(),
-      order: 5,
-      name: "fieldHeight",
-      label: "Field Height",
-      type: "text",
-      inputType: "text",
-      placeholder: "46px",
-      valueType: "string",
-    }),
-    generateField({
-      id: crypto.randomUUID(),
       order: 1,
       name: "label",
       label: "Field Label",
@@ -164,17 +154,6 @@ export const generateBaseFieldProperties = ({
     generateField({
       id: crypto.randomUUID(),
       order: 30,
-      frontendSlug: "focusedFieldBorderColor",
-      label: "Focused Field Border Color",
-      name: "focusedFieldBorderColor",
-      type: "text",
-      inputType: "text",
-      placeholder: "#ffffff",
-      valueType: "string",
-    }),
-    generateField({
-      id: crypto.randomUUID(),
-      order: 30,
       frontendSlug: "fieldFontWeight",
       label: "Field Font Weight",
       name: "fieldFontWeight",
@@ -234,128 +213,58 @@ export const generateBaseFieldProperties = ({
   ];
 
   switch (type) {
-    case "input": {
-      fields.push(
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "inputType",
-          label: "Input Type",
-          type: "select",
-          inputType: "select",
-          placeholder: "Select input type",
-          options: ["text", "number", "email", "phone", "date"]
-        }),
+    case "input":
+      {
+        fields.push(
           generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "maxLength",
-          label: "Max Length",
-          type: "number",
-          inputType: "text",
-          placeholder: "Enter maximum length",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 4,
-          name: "placeholder",
-          label: "Placeholder",
-          type: "text",
-          inputType: "text",
-          placeholder: "Enter placeholder text",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 5,
-          name: "minLength",
-          label: "Min Length",
-          type: "number",
-          inputType: "text",
-          placeholder: "Enter minimum length",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "maxLength",
-          label: "Max Length",
-          type: "number",
-          inputType: "text",
-          placeholder: "Enter maximum length",
-        }),
-      );
-    }
-    case "number":
-      fields.push(
-        generateField({
-          id: crypto.randomUUID(),
-          order: 4,
-          name: "placeholder",
-          label: "Placeholder",
-          type: "text",
-          inputType: "text",
-          placeholder: "Enter number",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 5,
-          name: "min",
-          label: "Min Value",
-          type: "number",
-          inputType: "text",
-          placeholder: "0",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "max",
-          label: "Max Value",
-          type: "number",
-          inputType: "text",
-          placeholder: "100",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 7,
-          name: "step",
-          label: "Step",
-          type: "number",
-          inputType: "text",
-          placeholder: "1",
-        }),
-      );
-      break;
-    case "shortText":
-      fields.push(
-        generateField({
-          id: crypto.randomUUID(),
-          order: 4,
-          name: "placeholder",
-          label: "Placeholder",
-          type: "text",
-          inputType: "text",
-          placeholder: "Enter placeholder text",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 5,
-          name: "minLength",
-          label: "Min Length",
-          type: "number",
-          inputType: "text",
-          placeholder: "Enter minimum length",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "maxLength",
-          label: "Max Length",
-          type: "number",
-          inputType: "text",
-          placeholder: "Enter maximum length",
-        }),
-      );
-      break;
-    case "date":
+            id: crypto.randomUUID(),
+            order: 5,
+            name: "fieldHeight",
+            label: "Field Height",
+            type: "text",
+            inputType: "text",
+            placeholder: "46px",
+            valueType: "string",
+          }),
+          generateField({
+            id: crypto.randomUUID(),
+            order: 6,
+            name: "inputType",
+            label: "Input Type",
+            type: "select",
+            inputType: "select",
+            placeholder: "Select input type",
+            options: ["text", "number", "email", "phone", "date"],
+          }),
+          generateField({
+            id: crypto.randomUUID(),
+            order: 6,
+            name: "maxLength",
+            label: "Max Length",
+            type: "number",
+            inputType: "text",
+            placeholder: "Enter maximum length",
+          }),
+          generateField({
+            id: crypto.randomUUID(),
+            order: 5,
+            name: "minLength",
+            label: "Min Length",
+            type: "number",
+            inputType: "text",
+            placeholder: "Enter minimum length",
+          }),
+          generateField({
+            id: crypto.randomUUID(),
+            order: 6,
+            name: "maxLength",
+            label: "Max Length",
+            type: "number",
+            inputType: "text",
+            placeholder: "Enter maximum length",
+          }),
+        );
+      }
       fields.push(
         generateField({
           id: crypto.randomUUID(),
@@ -445,13 +354,215 @@ export const generateBaseFieldProperties = ({
       );
       break;
     case "dropdown":
+      fields.push(
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownFieldPadding",
+          label: "Dropdown Field Padding",
+          type: "text",
+          inputType: "text",
+          placeholder: "24px 10px",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownFieldBackgroundColor",
+          label: "Dropdown Field Background Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownFieldHoveredBackgroundColor",
+          label: "Dropdown Field Hovered Background Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownFieldTextColor",
+          label: "Dropdown Field Text Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownFieldFontSize",
+          label: "Dropdown Field Font Size",
+          type: "text",
+          inputType: "text",
+          placeholder: "1rem",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 30,
+          frontendSlug: "dropdownFieldFontWeight",
+          label: "Dropdown Field Font Weight",
+          name: "dropdownFieldFontWeight",
+          options: fontWeights,
+          type: "select",
+          inputType: "select",
+          placeholder: "Select dropdown field font weight",
+          valueType: "string",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownContainerBorder",
+          label: "Dropdown Container Border",
+          type: "text",
+          inputType: "text",
+          placeholder: "1px solid red",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "dropdownContainerBorderRadius",
+          label: "Dropdown Container Border Radius",
+          type: "text",
+          inputType: "text",
+          placeholder: "8px",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "options",
+          label: "Options",
+          type: "text",
+          inputType: "optionsBuilder",
+          placeholder: `Add ${type
+            .split(/(?=[A-Z])/)
+            .map((el) => el.toLowerCase())
+            .join(" ")} option`,
+        }),
+      );
+      break;
+
     case "radioGroup":
+      fields.push(
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionBackgroundColor",
+          label: "Option Background Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "selectedOptionBackgroundColor",
+          label: "Selected Option Background Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionBorderRadius",
+          label: "Option Border Radius",
+          type: "text",
+          inputType: "text",
+          placeholder: "18px",
+        }), 
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionTextColor",
+          label: "Option Text Color",
+          type: "text",
+          inputType: "text",
+          placeholder: "#ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionBorder",
+          label: "Option Border",
+          type: "text",
+          inputType: "text",
+          placeholder: "1px solid #ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "selectedOptionBorder",
+          label: "Selected Option Border",
+          type: "text",
+          inputType: "text",
+          placeholder: "1px solid #ffffff",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionBorderRadius",
+          label: "Option Border Radius",
+          type: "text",
+          inputType: "text",
+          placeholder: "18px",
+        }),   
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "optionPadding",
+          label: "Option Padding",
+          type: "text",
+          inputType: "text",
+          placeholder: "10px 12px",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 33,
+          frontendSlug: "optionFontSize",
+          label: "Option Font Size",
+          name: "optionFontSize",
+          type: "text",
+          options: fontSizes,
+          inputType: "select",
+          placeholder: "Select option font size",
+          valueType: "string",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 30,
+          frontendSlug: "optionFontWeight",
+          label: "Option Font Weight",
+          name: "optionFontWeight",
+          options: fontWeights,
+          type: "select",
+          inputType: "select",
+          placeholder: "Select option font weight",
+          valueType: "string",
+        }),
+        generateField({
+          id: crypto.randomUUID(),
+          order: 4,
+          name: "options",
+          label: "Options",
+          type: "text",
+          inputType: "optionsBuilder",
+          placeholder: `Add ${type
+            .split(/(?=[A-Z])/)
+            .map((el) => el.toLowerCase())
+            .join(" ")} option`,
+        }),
+      );
+      break;
     case "checkboxGroup":
       fields.push(
         generateField({
           id: crypto.randomUUID(),
           order: 4,
-          name: "dropdownOptions",
+          name: "options",
           label: "Options",
           type: "text",
           inputType: "optionsBuilder",
@@ -618,7 +729,7 @@ const fieldSchemas = {
     type: "shortText",
   }),
 
-    input: generateBaseFieldProperties({
+  input: generateBaseFieldProperties({
     type: "input",
   }),
 
@@ -1066,50 +1177,21 @@ const buttonBorderField = generateField({
 
 const fieldTypes = [
   {
-
     id: crypto.randomUUID(),
     isInput: true,
     type: "search",
     placeholder: "Search fields...",
   },
-    {
+  {
     id: crypto.randomUUID(),
     frontendSlug: "input",
     title: "Input",
   },
-    {
+  {
     id: crypto.randomUUID(),
     frontendSlug: "paragraph",
     title: "Paragraph",
   },
-      /*
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "shortText",
-    title: "Short Text",
-  },
-
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "number",
-    title: "Number",
-  },
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "email",
-    title: "Email",
-  },
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "phone",
-    title: "Phone",
-  },
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "date",
-    title: "Date",
-  },
-  */
   {
     id: crypto.randomUUID(),
     frontendSlug: "dropdown",
@@ -1198,13 +1280,8 @@ export const formbuilder: FormBuilder = {
       ],
     },
     fields: {
-      //shortText: fieldSchemas.shortText,
       input: fieldSchemas.input,
       paragraph: fieldSchemas.paragraph,
-      //number: fieldSchemas.number,
-      //email: fieldSchemas.email,
-      //phone: fieldSchemas.phone,
-      //date: fieldSchemas.date,
       dropdown: fieldSchemas.dropdown,
       radioGroup: fieldSchemas.radioGroup,
       checkbox: fieldSchemas.checkbox,

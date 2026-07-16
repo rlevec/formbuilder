@@ -2,7 +2,7 @@ import styles from "../styles/form.module.css";
 
 import type { FormData } from "../../types";
 
-import TextField from "./TextField";
+import InputField from "./InputField";
 import FormLink from "./FormLink";
 import Button from "./Button";
 
@@ -34,7 +34,7 @@ export default function Form({ data, type }: { data: FormData; type: string }) {
       <fieldset className={styles.fieldset}>
         <legend className={styles.legend}>Form fields</legend>
         {data.fields.map((fieldEntry) => (
-          <TextField
+          <InputField
             key={fieldEntry.id}
             field={fieldEntry}
             value={(fieldEntry.name ? query[fieldEntry.name] : "")?.toString()}

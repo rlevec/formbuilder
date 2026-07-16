@@ -188,3 +188,18 @@ export interface AuthFormResponse {
   message: string;
   data?: FormData;
 }
+
+export type CanvasFieldValue =
+  | string
+  | boolean
+  | string[]
+  | number;
+
+export type CanvasFieldsValues = Record<string, CanvasFieldValue>;
+
+export type CanvasFieldInstance = {
+  id: string;
+  params: CanvasFieldsValues;
+  type: string;
+  value: CanvasFieldValue;
+};

@@ -6,9 +6,11 @@ import { useCustomMutation } from "../api";
 
 type CanvasFieldValue = string | boolean | string[] | number;
 
+type CanvasFieldsValues = Record<string, CanvasFieldValue>;
+
 type CanvasFieldInstance = {
   id: string;
-  fields: FormField[];
+  params: CanvasFieldsValues;
   type: string;
   value: CanvasFieldValue;
 };
@@ -219,55 +221,69 @@ export default function useFromBuilder(data: FormBuilder) {
   };
 
   const handleAddFieldToCanvas = () => {
-    const fields =
-      fieldSettingsConfig?.map((el) => ({
-        ...el,
-        value: el.name ? fieldConfigQuery[el.name] : "",
-      })) ?? [];
+    const params: CanvasFieldsValues = {};
 
-    const canvasFieldObject = {
+    if (Array.isArray(fieldSettingsConfig) && fieldSettingsConfig.length > 0) {
+      for (const item of fieldSettingsConfig) {
+        const name = item.name ?? "";
+
+        params[name] = name ? fieldConfigQuery[name] : "";
+      }
+    }
+
+    const canvasFieldObject: CanvasFieldInstance = {
       id: crypto.randomUUID(),
-      fields,
+      params,
       value: getDefaultValue(selectedDefaultFieldConfig?.slug ?? ""),
-      type: selectedDefaultFieldConfig ? selectedDefaultFieldConfig.slug : "",
+      type: selectedDefaultFieldConfig?.slug ?? "",
     };
 
     setCanvasFields((prev) => [...prev, canvasFieldObject]);
+    setSelectedDefaultFieldConfig(null);
   };
 
-  const handleUpdateFieldInCanvas = () => {
-    setCanvasFields((prev) => {
-      return prev.map((item) => {
-        if (item.id !== canvasFieldSelected) return item;
+const handleUpdateFieldInCanvas = () => {
+  setCanvasFields((prev) => {
+    return prev.map((item) => {
+      if (item.id !== canvasFieldSelected) return item;
 
-        return {
-          ...item,
-          fields: item.fields.map((field) => ({
-            ...field,
-            value: field.name ? fieldConfigQuery[field.name] : "",
-          })),
-        };
-      });
+      return {
+        ...item,
+        params: Object.fromEntries(
+          Object.keys(item.params).map((key) => [
+            key,
+            fieldConfigQuery[key] ?? item.params[key],
+          ]),
+        ),
+      };
     });
-  };
+  });
+};
 
-  const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
-    if (!canvasEntry) return;
+const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
+  if (!canvasEntry) return;
 
-    const fields = canvasEntry.fields;
+  const inputType = canvasEntry.type;
 
-    const queryObj: Record<string, string | boolean | string[] | number> = {};
+  const dataFields = data?.settings?.fields;
 
-    for (const el of fields) {
-      const name = el.name ?? null;
-      const value = el.value ?? null;
+  const matchFields = dataFields?.[inputType];
 
-      if (name && value) queryObj[name] = value;
+  const queryObj: Record<string, string | boolean | string[] | number> = {};
+
+  if (!matchFields) return;
+
+  for (const el of matchFields) {
+    const name = el.name ?? "";
+
+    if (name && canvasEntry.params[name] !== undefined) {
+      queryObj[name] = canvasEntry.params[name];
     }
+  }
 
-    setFieldConfigQuery(queryObj);
-    setCanvasFieldSelected(canvasEntry.id);
-  };
+  setFieldConfigQuery(queryObj);
+  setCanvasFieldSelected(canvasEntry.id);
+};
 
   const updateCanvasFieldValue = (
     id: string,
@@ -304,6 +320,8 @@ export default function useFromBuilder(data: FormBuilder) {
       ...formConfigQuery,
     }));
   };
+
+  console.log("fieldsConfigQuery", fieldConfigQuery);
 
   return {
     dragOverIdRef,

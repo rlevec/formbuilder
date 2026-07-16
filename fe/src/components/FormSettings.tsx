@@ -1,6 +1,6 @@
 import type { FormBuilderSettingsField } from "../../types";
 
-import TextField from "./TextField";
+import TextField from "./InputField";
 import SwitchField from "./SwitchField";
 import Textarea from "./TextareaField";
 import SelectField from "./SelectField";

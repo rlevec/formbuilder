@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { FormField, FieldUpdateParams } from "../../types";
 
-import styles from "../styles/textField.module.css";
+import styles from "../styles/inputField.module.css";
 
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
@@ -12,29 +12,11 @@ import type { ForwardRefExoticComponent } from "react";
 
 import Button from "./Button";
 
-interface CanvasFieldStyles {
-  backgroundColor?: string;
-  textColor?: string;
-  fontWeight?: string | number;
-  padding?: string;
-  borderRadius?: string;
-  border?: string;
-  labelMargin?: string;
-  labelTextColor?: string;
-  labelFontWeight?: string | number;
-  fieldFontSize?: string;
-  labelFontSize?: string;
-  focusedLabelColor?: string;
-  focusedFieldBorderColor?: string;
-}
-
 interface Props {
   field: FormField;
   value: string;
   error?: string;
   onChange: (params: FieldUpdateParams) => void;
-  isCanvas?: boolean;
-  canvasStyles?: CanvasFieldStyles;
 }
 
 const FIELD_ICONS: Record<
@@ -45,19 +27,15 @@ const FIELD_ICONS: Record<
   password: Lock,
 };
 
-export default function TextField({
+export default function InputField({
   field,
   value,
   error,
-  onChange,
-  isCanvas,
-  canvasStyles,
+  onChange
 }: Props) {
   const [passwordFieldType, setPasswordFieldType] = useState<
     "password" | "text"
   >("password");
-
-  const [canvasFieldInFocus, setCanvasFieldInFocus] = useState(false);
 
   const isPassword =
     field.isPassword || field.name?.includes?.("password") || false;
@@ -84,26 +62,11 @@ export default function TextField({
 
   return (
     <div
-      style={isCanvas ? { display: "flex", flexDirection: "column" } : {}}
-      className={!isCanvas ? styles.wrapper : ""}
+      className={styles.wrapper}
     >
       {field.label && (
         <label
-          style={
-            isCanvas
-              ? {
-                  fontSize: canvasStyles?.labelFontSize ?? "14px",
-                  margin: canvasStyles?.labelMargin ?? "0 0 0.5rem",
-                  color: canvasFieldInFocus
-                    ? (canvasStyles?.focusedLabelColor ??
-                      canvasStyles?.labelTextColor ??
-                      "#6b7280")
-                    : (canvasStyles?.labelTextColor ?? "#6b7280"),
-                  fontWeight: canvasStyles?.labelFontWeight ?? "500",
-                }
-              : {}
-          }
-          className={!isCanvas ? styles.label : ""}
+          className={styles.label}
           htmlFor={field.name}
         >
           {field.label}
@@ -111,11 +74,7 @@ export default function TextField({
       )}
 
       <div
-        className={
-          !isCanvas
-            ? `${styles.inputWrapper} ${error ? styles.errorWrapper : ""}`
-            : ""
-        }
+        className={`${styles.inputWrapper} ${error ? styles.errorWrapper : ""}`}
       >
         {FieldIcon && (
           <div className={styles.icon} aria-hidden="true">
@@ -124,30 +83,8 @@ export default function TextField({
         )}
 
         <input
-          onFocus={() => isCanvas && setCanvasFieldInFocus(true)}
-          onBlur={() => isCanvas && setCanvasFieldInFocus(false)}
-          style={
-            isCanvas
-              ? {
-                  fontSize: canvasStyles?.fieldFontSize,
-                  color: canvasStyles?.textColor ?? "var(--text-primary)",
-                  width: "100%",
-                  fontWeight: canvasStyles?.fontWeight ?? "400",
-                  background: canvasStyles?.backgroundColor ?? "var(--surface)",
-                  border: canvasStyles?.border ?? "1px solid var(--border)",
-                  borderColor: canvasFieldInFocus
-                    ? (canvasStyles?.focusedFieldBorderColor ??
-                      canvasStyles?.border ??
-                      "var(--border)")
-                    : (canvasStyles?.border ?? "var(--border)"),
-                  borderRadius: canvasStyles?.borderRadius ?? "8px",
-                  padding: canvasStyles?.padding ?? "0 var(--space-3)",
-                  height: "45px",
-                }
-              : {}
-          }
           id={field.name}
-          className={!isCanvas ? styles.input : styles.canvasInput}
+          className={styles.input}
           value={value ?? ""}
           onChange={(e) =>
             onChange({
@@ -169,7 +106,7 @@ export default function TextField({
               .join(" ") || undefined
           }
         />
-        {isPassword && !isCanvas && (
+        {isPassword && (
           <Button
             type="button"
             visual="ghost"
@@ -195,7 +132,7 @@ export default function TextField({
           {error}
         </small>
       )}
-      {validators.length > 0 && showPills && !isCanvas && (
+      {validators.length > 0 && showPills && (
         <div id={pillsId} className={styles.pills}>
           {validators.map(({ message, valid, neutral }, idx) => (
             <span

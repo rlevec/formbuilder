@@ -1,13 +1,8 @@
-import type { FormField } from "../../types";
-
 import FormCanvasElement from "./FormCanvasElement";
 
-type CanvasFieldInstance = {
-  id: string;
-  fields: FormField[];
-  type: string;
-  value: string | boolean | string[] | number;
-};
+import { getStringSetting } from "../lib/utils";
+
+import type { CanvasFieldInstance, CanvasFieldValue } from "../../types";
 
 interface Props {
   canvasFieldSelected: string | null;
@@ -15,14 +10,15 @@ interface Props {
   handleDragStart: (startId: string) => void;
   handleDrop: (dropId: string) => void;
   handleDragEnd: () => void;
-  handleSelectCanvasField: (canvasEntry: CanvasFieldInstance) => void;
+  handleSelectCanvasField: (
+    canvasEntry: CanvasFieldInstance
+  ) => void;
   updateCanvasFieldValue: (
     id: string,
-    value: boolean | string | string[] | number,
+    value: CanvasFieldValue,
   ) => void;
   selectedFormSettings: Record<string, string | boolean>;
 }
-
 export default function FormCanvas({
   data,
   handleDragStart,
@@ -33,8 +29,10 @@ export default function FormCanvas({
   updateCanvasFieldValue,
   selectedFormSettings,
 }: Props) {
-
-  const safeTextAlign = (value?: string): React.CSSProperties["textAlign"] => {
+ 
+  const safeTextAlign = (
+    value?: string,
+  ): React.CSSProperties["textAlign"] => {
     if (
       value === "left" ||
       value === "right" ||
@@ -44,103 +42,201 @@ export default function FormCanvas({
     ) {
       return value;
     }
+
     return "center";
   };
+const canvasStyles: React.CSSProperties = {
+  width: "100%",
+  height: "100%",
+  backgroundColor: getStringSetting({
+    key: "canvasBackgroundColor",
+    fallback: "var(--surface)",
+    settings: selectedFormSettings,
+  }),
+  padding: getStringSetting({
+    key: "canvasPadding",
+    fallback: "var(--space-2)",
+    settings: selectedFormSettings,
+  }),
+  border: getStringSetting({
+    key: "canvasBorder",
+    fallback: "1px solid var(--border)",
+    settings: selectedFormSettings,
+  }),
+};
 
-  const canvasStyles = {
-      width: "100%",
-      height: "100%",
-      backgroundColor: selectedFormSettings?.canvasBackgroundColor ? String(selectedFormSettings?.canvasBackgroundColor) : "var(--surface)",
-      padding: String(selectedFormSettings?.canvasPadding),
-      border: String(selectedFormSettings?.canvasBorder),
-    }
-  const gridStyles = {
-      display: "grid",
-      gridTemplateColumns: "repeat(2, 1fr)",
-      rowGap: selectedFormSettings?.gridVerticalGap as string,
-      columnGap: selectedFormSettings?.gridHorizontalGap as string,
-    }
+const gridStyles: React.CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  rowGap: getStringSetting({
+    key: "gridVerticalGap",
+    fallback: "var(--space-4)",
+    settings: selectedFormSettings,
+  }),
+  columnGap: getStringSetting({
+    key: "gridHorizontalGap",
+    fallback: "var(--space-4)",
+    settings: selectedFormSettings,
+  }),
+};
 
-  const headerStyles = {
-      margin: selectedFormSettings?.headerMargin as string,
-      color: selectedFormSettings?.headerTextColor as string,
-      fontSize: selectedFormSettings?.headerTextSize as string,
-      fontWeight: selectedFormSettings?.headerTextWeight as string,
-      textAlign: safeTextAlign(
-        selectedFormSettings?.headerAlignment as React.CSSProperties["textAlign"],
-      ),
-    }
+const headerStyles: React.CSSProperties = {
+  margin: getStringSetting({
+    key: "headerMargin",
+    fallback: "0 0 var(--space-6) 0",
+    settings: selectedFormSettings,
+  }),
+  color: getStringSetting({
+    key: "headerTextColor",
+    fallback: "var(--text-primary)",
+    settings: selectedFormSettings,
+  }),
+  fontSize: getStringSetting({
+    key: "headerTextSize",
+    fallback: "var(--text-3xl)",
+    settings: selectedFormSettings,
+  }),
+  fontWeight: getStringSetting({
+    key: "headerTextWeight",
+    fallback: "800",
+    settings: selectedFormSettings,
+  }),
+  textAlign: safeTextAlign(
+    getStringSetting({
+      key: "headerAlignment",
+      fallback: "center",
+      settings: selectedFormSettings,
+    }),
+  ),
+};
 
-  const descriptionStyles = {
-      margin: selectedFormSettings?.descriptionMargin as string,
-      color: selectedFormSettings?.descriptionTextColor as string,
-      fontSize: selectedFormSettings?.descriptionTextSize as string,
-      fontWeight: selectedFormSettings?.descriptionTextWeight as string,
-      textAlign: safeTextAlign(
-        selectedFormSettings?.descriptionAlignmentStyle as React.CSSProperties["textAlign"],
-      ),
-    }
+const descriptionStyles: React.CSSProperties = {
+  margin: getStringSetting({
+    key: "descriptionMargin",
+    fallback: "0 var(--space-6) 0 0",
+    settings: selectedFormSettings,
+  }),
+  color: getStringSetting({
+    key: "descriptionTextColor",
+    fallback: "var(--text-primary)",
+    settings: selectedFormSettings,
+  }),
+  fontSize: getStringSetting({
+    key: "descriptionTextSize",
+    fallback: "var(--text-base)",
+    settings: selectedFormSettings,
+  }),
+  fontWeight: getStringSetting({
+    key: "descriptionTextWeight",
+    fallback: "400",
+    settings: selectedFormSettings,
+  }),
+  textAlign: safeTextAlign(
+    getStringSetting({
+      key: "descriptionAlignmentStyle",
+      fallback: "center",
+      settings: selectedFormSettings,
+    }),
+  ),
+};
 
-  const buttonStyles = {
-      alignSelf: selectedFormSettings?.buttonAlignment as string,
-      margin: selectedFormSettings?.buttonMargin as string,
-      padding: selectedFormSettings?.buttonPadding as string,
-      width: selectedFormSettings?.buttonWidth as string,
-      backgroundColor: selectedFormSettings?.buttonBackgroundColor as string,
-      color: selectedFormSettings?.buttonTextColor as string,
-      border: selectedFormSettings?.buttonBorder as string,
-      borderRadius: selectedFormSettings?.buttonBorderRadius as string,
-    }
+const buttonStyles: React.CSSProperties = {
+  alignSelf: getStringSetting({
+    key: "buttonAlignment",
+    fallback: "center",
+    settings: selectedFormSettings,
+  }),
+  margin: getStringSetting({
+    key: "buttonMargin",
+    fallback: "var(--space-6) 0 0 0",
+    settings: selectedFormSettings,
+  }),
+  padding: getStringSetting({
+    key: "buttonPadding",
+    fallback: "var(--space-3) var(--space-4)",
+    settings: selectedFormSettings,
+  }),
+  width: getStringSetting({
+    key: "buttonWidth",
+    fallback: "125px",
+    settings: selectedFormSettings,
+  }),
+  backgroundColor: getStringSetting({
+    key: "buttonBackgroundColor",
+    fallback: "var(--primary)",
+    settings: selectedFormSettings,
+  }),
+  color: getStringSetting({
+    key: "buttonTextColor",
+    fallback: "var(--surface)",
+    settings: selectedFormSettings,
+  }),
+  border: getStringSetting({
+    key: "buttonBorder",
+    fallback: "1px solid var(--primary)",
+    settings: selectedFormSettings,
+  }),
+  borderRadius: getStringSetting({
+    key: "buttonBorderRadius",
+    fallback: "var(--radius-md)",
+    settings: selectedFormSettings,
+  }),
+  cursor: "pointer",
+};
 
-  const buttonContainerStyles = {
-      display: "flex",
-      justifyContent:
-        selectedFormSettings?.buttonAlignment === "left"
-          ? "flex-start"
-          : selectedFormSettings?.buttonAlignment === "right"
-          ? "flex-end"
-          : "center",
-    }
+const buttonAlignment = getStringSetting({
+  key: "buttonAlignment",
+  fallback: "center",
+  settings: selectedFormSettings,
+});
+
+const buttonContainerStyles: React.CSSProperties = {
+  display: "flex",
+  justifyContent:
+    buttonAlignment === "left"
+      ? "flex-start"
+      : buttonAlignment === "right"
+      ? "flex-end"
+      : "center",
+};  
 
   if (!data) return null;
 
   return (
     <div style={canvasStyles}>
-      {selectedFormSettings.formTitle && (
-        <h1 style={headerStyles}>
-          {selectedFormSettings?.formTitle as string}
-        </h1>
-      )}
-      {selectedFormSettings.formDescription && (
+      <h1 style={headerStyles}>
+        {getStringSetting({key: "formTitle", fallback: "Form", settings: selectedFormSettings})}
+      </h1>
         <p style={descriptionStyles}>
-          {selectedFormSettings?.formDescription as string}
+          {getStringSetting({key: "formDescription", fallback: "Description", settings: selectedFormSettings})}
         </p>
-      )}
+
       {data.length > 0 && (
         <div style={gridStyles}>
-          {data.map((canvasEntry) => {
-            return (
-              <FormCanvasElement
-                key={canvasEntry.id}
-                canvasEntry={canvasEntry}
-                canvasFieldSelected={canvasFieldSelected}
-                handleDragStart={handleDragStart}
-                handleDrop={handleDrop}
-                handleDragEnd={handleDragEnd}
-                handleSelectCanvasField={handleSelectCanvasField}
-                updateCanvasFieldValue={updateCanvasFieldValue}
-              />
-            );
+          {data.map((canvasEntry) => (
+            <FormCanvasElement
+              key={canvasEntry.id}
+              canvasEntry={canvasEntry}
+              canvasFieldSelected={canvasFieldSelected}
+              handleDragStart={handleDragStart}
+              handleDrop={handleDrop}
+              handleDragEnd={handleDragEnd}
+              handleSelectCanvasField={handleSelectCanvasField}
+              updateCanvasFieldValue={updateCanvasFieldValue}
+            />
+          ))}
+        </div>
+      )}
+
+      <div style={buttonContainerStyles}>
+        <button style={buttonStyles}>
+          {getStringSetting({
+            key: "formSubmitButtonText",
+            fallback: "Submit",
+            settings: selectedFormSettings
           })}
-        </div>
-      )}
-      {selectedFormSettings.formSubmitButtonText && (
-        <div style={buttonContainerStyles}>
-          <button style={buttonStyles}>
-            {selectedFormSettings?.formSubmitButtonText as string}
-          </button>
-        </div>
-      )}
+        </button>
+      </div>
     </div>
   );
-};
+}

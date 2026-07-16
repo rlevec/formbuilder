@@ -7,7 +7,7 @@ import type { LucideIcon } from "lucide-react";
 interface Props {
   title?: string;
   type?: "button" | "submit" | "reset";
-  visual?: "primary" | "secondary" | "ghost" | "danger";
+  visual?: "primary" | "secondary" | "ghost" | "danger" | "success";
   onClick?: () => void;
   onKeyDown?: (e: KeyboardEvent<HTMLButtonElement>) => void;
   additionalClassName?: string;

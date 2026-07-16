@@ -95,3 +95,28 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.success {
+  background: var(--success);
+  color: white;
+  border: 1px solid var(--success);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.success:hover {
+  background: var(--success-hover);
+  border-color: var(--success-hover);
+}
+
+.success:active {
+  transform: scale(0.98);
+}
+
+.success:focus-visible {
+  outline: 3px solid var(--success-light);
+  outline-offset: 2px;
+}
