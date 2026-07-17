@@ -1,5 +1,6 @@
-import type { FormField, FieldUpdateParams } from "../../types";
-import styles from "../styles/radioGroupField.module.css";
+import type { FormField, FieldUpdateParams } from "../../../types";
+
+import styles from "../../styles/radioGroupField.module.css";
 
 interface Props {
   field: FormField;

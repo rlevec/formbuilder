@@ -1,8 +1,8 @@
 import FormCanvasElement from "./FormCanvasElement";
 
-import { getStringSetting } from "../lib/utils";
+import { getStringSetting } from "../../lib/utils";
 
-import type { CanvasFieldInstance, CanvasFieldValue } from "../../types";
+import type { CanvasFieldInstance, CanvasFieldValue } from "../../../types";
 
 interface Props {
   canvasFieldSelected: string | null;
@@ -113,7 +113,7 @@ const headerStyles: React.CSSProperties = {
 const descriptionStyles: React.CSSProperties = {
   margin: getStringSetting({
     key: "descriptionMargin",
-    fallback: "0 var(--space-6) 0 0",
+    fallback: "0 0 var(--space-6) 0",
     settings: selectedFormSettings,
   }),
   color: getStringSetting({

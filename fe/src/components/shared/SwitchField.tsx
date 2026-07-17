@@ -1,8 +1,8 @@
-import type { FormField, SwitchParams } from "../../types";
+import type { FormField, SwitchParams } from "../../../types";
 
-import styles from "../styles/switchField.module.css";
+import styles from "../../styles/switchField.module.css";
 
-import Button from "./Button"
+import Button from "./Button";
 
 interface Props {
   field: FormField;

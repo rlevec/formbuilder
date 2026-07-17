@@ -1,19 +1,21 @@
-import styles from "../styles/formBuilder.module.css";
+import styles from "../../styles/formBuilder.module.css";
 
-import Button from "./Button";
+import Button from "../shared/Button";
 import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
 import FormCanvas from "./FormCanvas";
 
+import Logo from "../../assets/formbuilder.svg?react"
+
 import {
   type FormBuilder,
-} from "../../types";
+} from "../../../types";
 
 interface Props {
   data: FormBuilder;
 }
 
-import useFromBuilder from "../hooks/useFormBuilder";
+import useFromBuilder from "../../hooks/useFormBuilder";
 
 export default function FormBuilder({ data }: Props) {
 
@@ -47,14 +49,15 @@ export default function FormBuilder({ data }: Props) {
   return (
     <main className={styles.layout}>
       <header className={styles.topbar}>
-        <div>LOGO</div>
+        <div className={styles.logoContainer}>
+          <Logo className={styles.logo}/>
+        </div>
         <Button
           title="Logout"
           type="button"
           onClick={() => logoutMutation.mutate({})}
         />
       </header>
-
       <aside className={styles.leftPanel}>
         <LeftPanel
           selectedDefaultFieldConfigId={

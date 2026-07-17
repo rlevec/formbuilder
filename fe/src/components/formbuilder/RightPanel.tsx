@@ -1,14 +1,15 @@
-import Button from "./Button";
+import Button from "../shared/Button";
 import FieldSettings from "./FieldSettings";
 import FormSettings from "./FormSettings";
 
-import styles from "../styles/rightPanel.module.css";
+import styles from "../../styles/rightPanel.module.css";
 
 import type {
+  CanvasFieldValue,
   FormBuilderSettingsField,
   FormField,
-  HandleFieldUpdateParams
-} from "../../types";
+  HandleFieldUpdateParams,
+} from "../../../types";
 
 interface Props {
   canvasFieldSelected: string | null;
@@ -18,7 +19,7 @@ interface Props {
   handleFieldUpdate: (params: HandleFieldUpdateParams) => void;
   fieldSettingsConfig: FormField[] | null;
   formConfigQuery: Record<string, string | boolean>;
-  fieldConfigQuery: Record<string, string | boolean | string[] | number>;
+  fieldConfigQuery: Record<string, CanvasFieldValue>;
   handleUpdateFieldInCanvas: () => void;
   handleTabChange: (type: "field" | "form") => void;
   updateFormSetting: () => void;

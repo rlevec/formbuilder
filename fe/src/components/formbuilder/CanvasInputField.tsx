@@ -1,4 +1,4 @@
-import type { CanvasFieldsValues } from "../../types";
+import type { CanvasFieldsValues } from "../../../types";
 
 import type { CSSProperties } from "react";
 
@@ -9,7 +9,7 @@ type Props = {
   onChange: ({ value }: { value: string }) => void;
 };
 
-export default function CanvasTextareaField({ params, id, onChange, value }: Props) {
+export default function CanvasInputField({ params, id, onChange, value }: Props) {
   const wrapperStyles: CSSProperties = {
     width: "100%",
     display: "flex",
@@ -65,18 +65,16 @@ export default function CanvasTextareaField({ params, id, onChange, value }: Pro
       typeof params?.fieldTextColor === "string"
         ? params.fieldTextColor
         : "var(--text-primary)",
-     resize: "vertical",
-     minHeight: "200px",
-     maxHeight: "400px"
   };
 
   return (
     <div style={wrapperStyles}>
       {params?.label && <label style={labelStyles}>{params.label}</label>}
-      <textarea
+      <input
         onChange={(event) => onChange({value: event?.target?.value})}
         value={value}
         style={fieldStyles}
+        type={(params?.inputType as string) ?? "text"}
         placeholder={(params?.placeholder as string) ?? "Enter value..."}
         name={id}
       />

@@ -1,6 +1,6 @@
-import styles from "../styles/checkboxField.module.css";
+import styles from "../../styles/checkboxField.module.css";
 
-import type { FormField, FieldUpdateParams } from "../../types";
+import type { FormField, FieldUpdateParams } from "../../../types";
 
 interface Props {
   field: FormField;
@@ -19,11 +19,6 @@ export default function CheckboxGroupField({
   return (
     <div className={styles.wrapper}>
       {field.options?.map((option) => {
-        console.log("val_test", {
-          value,
-          option,
-          includes: Array.isArray(value) && value.includes(option),
-        });
         return (
           <div key={option} className={styles.optionWrapper}>
             <label

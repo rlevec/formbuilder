@@ -4,16 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import { useCustomMutation } from "../api";
 
-type CanvasFieldValue = string | boolean | string[] | number;
-
-type CanvasFieldsValues = Record<string, CanvasFieldValue>;
-
-type CanvasFieldInstance = {
-  id: string;
-  params: CanvasFieldsValues;
-  type: string;
-  value: CanvasFieldValue;
-};
+import type {
+  CanvasFieldInstance,
+  CanvasFieldsValues,
+  CanvasFieldValue,
+} from "../../types";
 
 type SelectedDefaultFieldConfig = {
   slug: string;
@@ -63,7 +58,7 @@ export default function useFromBuilder(data: FormBuilder) {
   >({});
 
   const [fieldConfigQuery, setFieldConfigQuery] = useState<
-    Record<string, string | boolean | string[] | number>
+    Record<string, CanvasFieldValue>
   >({});
 
   const [selectedDefaultFieldConfig, setSelectedDefaultFieldConfig] =
@@ -113,7 +108,9 @@ export default function useFromBuilder(data: FormBuilder) {
     if (inputType === "optionsBuilder") {
       setFieldConfigQuery((prev) => {
         const current = prev[fieldName];
-        const list = Array.isArray(current) ? current : [];
+        const list = Array.isArray(current) && current.every((item) => typeof item === "string")
+          ? current
+          : [];
 
         if (isOptionDelete) {
           return {
@@ -242,48 +239,48 @@ export default function useFromBuilder(data: FormBuilder) {
     setSelectedDefaultFieldConfig(null);
   };
 
-const handleUpdateFieldInCanvas = () => {
-  setCanvasFields((prev) => {
-    return prev.map((item) => {
-      if (item.id !== canvasFieldSelected) return item;
+  const handleUpdateFieldInCanvas = () => {
+    setCanvasFields((prev) => {
+      return prev.map((item) => {
+        if (item.id !== canvasFieldSelected) return item;
 
-      return {
-        ...item,
-        params: Object.fromEntries(
-          Object.keys(item.params).map((key) => [
-            key,
-            fieldConfigQuery[key] ?? item.params[key],
-          ]),
-        ),
-      };
+        return {
+          ...item,
+          params: Object.fromEntries(
+            Object.keys(item.params).map((key) => [
+              key,
+              fieldConfigQuery[key] ?? item.params[key],
+            ]),
+          ),
+        };
+      });
     });
-  });
-};
+  };
 
-const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
-  if (!canvasEntry) return;
+  const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
+    if (!canvasEntry) return;
 
-  const inputType = canvasEntry.type;
+    const inputType = canvasEntry.type;
 
-  const dataFields = data?.settings?.fields;
+    const dataFields = data?.settings?.fields;
 
-  const matchFields = dataFields?.[inputType];
+    const matchFields = dataFields?.[inputType];
 
-  const queryObj: Record<string, string | boolean | string[] | number> = {};
+    const queryObj: CanvasFieldsValues = {};
 
-  if (!matchFields) return;
+    if (!matchFields) return;
 
-  for (const el of matchFields) {
-    const name = el.name ?? "";
+    for (const el of matchFields) {
+      const name = el.name ?? "";
 
-    if (name && canvasEntry.params[name] !== undefined) {
-      queryObj[name] = canvasEntry.params[name];
+      if (name && canvasEntry.params[name] !== undefined) {
+        queryObj[name] = canvasEntry.params[name];
+      }
     }
-  }
 
-  setFieldConfigQuery(queryObj);
-  setCanvasFieldSelected(canvasEntry.id);
-};
+    setFieldConfigQuery(queryObj);
+    setCanvasFieldSelected(canvasEntry.id);
+  };
 
   const updateCanvasFieldValue = (
     id: string,
@@ -294,17 +291,6 @@ const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
 
       return prev.map((item) => {
         if (item.id !== id) return item;
-
-        if (item.type === "checkboxGroup") {
-          const current = Array.isArray(item.value) ? item.value : [];
-
-          return {
-            ...item,
-            value: current.includes(String(value))
-              ? current.filter((v) => v !== value)
-              : [...current, String(value)],
-          };
-        }
 
         return {
           ...item,
@@ -320,8 +306,6 @@ const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
       ...formConfigQuery,
     }));
   };
-
-  console.log("fieldsConfigQuery", fieldConfigQuery);
 
   return {
     dragOverIdRef,

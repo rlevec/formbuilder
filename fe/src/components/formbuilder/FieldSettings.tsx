@@ -1,24 +1,25 @@
-import type { FormField, HandleFieldUpdateParams} from "../../types";
+import type {
+  CanvasFieldValue,
+  FormField,
+  HandleFieldUpdateParams,
+} from "../../../types";
 
-import TextField from "./InputField";
-import SwitchField from "./SwitchField";
-import TextareaField from "./TextareaField";
-import SelectField from "./SelectField";
-import RadioGroupField from "./RadioGroupField";
-import OptionsBuilderField from "./OptionsBuilderField";
+import InputField from "../shared/InputField";
+import SwitchField from "../shared/SwitchField";
+import TextareaField from "../shared/TextareaField";
+import SelectField from "../shared/SelectField";
+import RadioGroupField from "../shared/RadioGroupField";
+import OptionsBuilderField from "../shared/OptionsBuilderField";
 
-import styles from "../styles/fieldSettings.module.css";
+import styles from "../../styles/fieldSettings.module.css";
 
 interface Props {
   handleFieldUpdate: (params: HandleFieldUpdateParams) => void;
-  fieldConfigQuery: Record<string, string | boolean | string[] | number>;
-  fieldSettingsConfig: FormField[] | null
+  fieldConfigQuery: Record<string, CanvasFieldValue>;
+  fieldSettingsConfig: FormField[] | null;
 }
 
-const getValue = (
-  map: Record<string, string | boolean | string[] | number>,
-  key?: string
-) => {
+const getValue = (map: Record<string, CanvasFieldValue>, key?: string) => {
   if (!key) return undefined;
   return map[key];
 };
@@ -40,7 +41,7 @@ export default function FieldSettings({
         switch (fieldEntry.inputType) {
           case "text":
             return (
-              <TextField
+              <InputField
                 key={fieldEntry.id}
                 field={fieldEntry}
                 value={typeof value === "string" ? value : ""}

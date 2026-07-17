@@ -1,11 +1,15 @@
-import styles from "../styles/formCanvasElement.module.css";
+import styles from "../../styles/formCanvasElement.module.css";
 
-import type { CanvasFieldInstance, CanvasFieldValue } from "../../types";
+import type { CanvasFieldInstance, CanvasFieldValue } from "../../../types";
 
 import CanvasInputField from "./CanvasInputField";
 import CanvasTextareaField from "./CanvasTextareaField";
 import CanvasSelectField from "./CanvasSelectField";
 import CanvasRadioGroupField from "./CanvasRadioGroupField";
+import CanvasCheckboxField from "./CanvasCheckboxField";
+import CanvasCheckboxGroupField from "./CanvasCheckboxGroupField";
+import CanvasSwitchField from "./CanvasSwitchComponent";
+import CanvasRatingField from "./CanvasRatingField";
 
 interface Props {
   canvasFieldSelected: string | null;
@@ -16,6 +20,17 @@ interface Props {
   handleSelectCanvasField: (canvasEntry: CanvasFieldInstance) => void;
   updateCanvasFieldValue: (id: string, value: CanvasFieldValue) => void;
 }
+
+const FIELD_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  input: CanvasInputField,
+  paragraph: CanvasTextareaField,
+  dropdown: CanvasSelectField,
+  radioGroup: CanvasRadioGroupField,
+  checkbox: CanvasCheckboxField,
+  checkboxGroup: CanvasCheckboxGroupField,
+  toggle: CanvasSwitchField,
+  rating: CanvasRatingField
+};
 
 export default function FormCanvasElement({
   canvasEntry,
@@ -32,6 +47,18 @@ export default function FormCanvasElement({
 
   const widthValue = widthField ? widthField : "full";
 
+  const fieldProps = {
+    id,
+    params,
+    value: (canvasEntry.value as string) ?? "",
+    onChange: ({ value }: { value: CanvasFieldValue }) =>
+      updateCanvasFieldValue(canvasEntry.id, value),
+  };
+
+  const ActiveFieldComponent = FIELD_COMPONENTS[type];
+
+  if (!ActiveFieldComponent) return null;
+
   return (
     <div
       className={`${styles.field} ${
@@ -45,46 +72,7 @@ export default function FormCanvasElement({
       key={id}
       onClick={() => handleSelectCanvasField(canvasEntry)}
     >
-      {type === "input" && (
-        <CanvasInputField
-          id={id}
-          params={params}
-          value={(canvasEntry.value as string) ?? ""}
-          onChange={({ value }) =>
-            updateCanvasFieldValue(canvasEntry.id, value)
-          }
-        />
-      )}
-      {type === "paragraph" && (
-        <CanvasTextareaField
-          id={id}
-          params={params}
-          value={(canvasEntry.value as string) ?? ""}
-          onChange={({ value }) =>
-            updateCanvasFieldValue(canvasEntry.id, value)
-          }
-        />
-      )}
-      {type === "dropdown" && (
-        <CanvasSelectField
-          id={id}
-          params={params}
-          value={(canvasEntry.value as string) ?? ""}
-          onChange={({ value }) =>
-            updateCanvasFieldValue(canvasEntry.id, value)
-          }
-        />
-      )}
-      {type === "radioGroup" && (
-        <CanvasRadioGroupField
-          id={id}
-          params={params}
-          value={(canvasEntry.value as string) ?? ""}
-          onChange={({ value }) =>
-            updateCanvasFieldValue(canvasEntry.id, value)
-          }
-        />
-      )}
+      <ActiveFieldComponent {...fieldProps} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import type { CanvasFieldsValues } from "../../types";
+import type { CanvasFieldsValues } from "../../../types";
 
 import type { CSSProperties } from "react";
 
@@ -20,6 +20,7 @@ export default function CanvasRadioGroupField({
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    border: "none"
   };
 
   const optionsStyles: CSSProperties = {

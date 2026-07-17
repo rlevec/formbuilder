@@ -1,9 +1,10 @@
 import { useState } from "react";
-import type { FieldUpdateParams, FormField } from "../../types";
+
+import type { FieldUpdateParams, FormField } from "../../../types";
 
 import { ChevronDown } from "lucide-react";
 
-import styles from "../styles/selectField.module.css";
+import styles from "../../styles/selectField.module.css";
 
 import Button from "./Button";
 
@@ -25,8 +26,6 @@ export default function SelectField({ field, value, error, onSelect }: Props) {
       });
       setOpen(false);
     }
-
-  console.log("fieldOptions", field.options);
 
   return (
     <div className={`${styles.wrapper} ${open ? styles.open : ""}`}>
@@ -53,7 +52,7 @@ export default function SelectField({ field, value, error, onSelect }: Props) {
       </div>
       {open && Array.isArray(field.options) && (
         <ul className={styles.options} role="listbox">
-          {field.options.map((option, idx) => (
+          {field.options.map((option: string, idx: number) => (
             <li
               key={`${option}-${idx}`}
               role="option"

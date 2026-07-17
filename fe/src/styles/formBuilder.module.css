@@ -27,9 +27,16 @@
   border-bottom: 1px solid var(--border);
 }
 
-.logoArea {
-  font-weight: 700;
-  font-size: var(--text-lg);
+.logoContainer {
+    cursor: pointer;
+    width: calc(240px - var(--space-6) * 2);
+    height: 100%;
+}
+
+
+.logo {
+ display: flex;
+ flex: 1;
 }
 
 .topbarContent {

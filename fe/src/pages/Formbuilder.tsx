@@ -1,6 +1,6 @@
 import styles from "../styles/formBuilderWrapper.module.css";
 
-import FormBuilder from "../components/FormBuilder";
+import FormBuilder from "../components/formbuilder/FormBuilder";
 
 import { useCustomQuery } from "../api";
 

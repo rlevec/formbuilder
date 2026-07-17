@@ -2,7 +2,7 @@ import styles from "../styles/authWrapper.module.css";
 
 import { useCustomQuery } from "../api";
 
-import Form from "../components/Form";
+import Form from "../components/form/Form";
 
 import type { AuthFormResponse } from "../../types";
 

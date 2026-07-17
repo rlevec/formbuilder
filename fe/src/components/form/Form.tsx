@@ -1,12 +1,12 @@
-import styles from "../styles/form.module.css";
+import styles from "../../styles/form.module.css";
 
-import type { FormData } from "../../types";
+import type { FormData } from "../../../types";
 
-import InputField from "./InputField";
+import InputField from "../shared/InputField";
 import FormLink from "./FormLink";
-import Button from "./Button";
+import Button from "../shared/Button";
 
-import useForm from "../hooks/useForm";
+import useForm from "../../hooks/useForm";
 
 export default function Form({ data, type }: { data: FormData; type: string }) {
   const {

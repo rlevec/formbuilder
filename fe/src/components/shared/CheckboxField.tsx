@@ -1,6 +1,6 @@
 import styles from "../styles/checkboxField.module.css";
 
-import type { FormField, FieldUpdateParams } from "../../types";
+import type { FormField, FieldUpdateParams } from "../../../types";
 
 interface Props {
   field: FormField;

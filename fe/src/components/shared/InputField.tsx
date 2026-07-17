@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import type { FormField, FieldUpdateParams } from "../../types";
+import type { FormField, FieldUpdateParams } from "../../../types";
 
-import styles from "../styles/inputField.module.css";
+import styles from "../../styles/inputField.module.css";
 
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 

@@ -1,4 +1,4 @@
-import type { CanvasFieldsValues } from "../../types";
+import type { CanvasFieldsValues } from "../../../types";
 
 import type { CSSProperties } from "react";
 

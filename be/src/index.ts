@@ -43,7 +43,7 @@ async function startServer() {
         saveUninitialized: false,
         cookie: {
           httpOnly: true,
-          secure: false, // true in production (HTTPS)
+          secure: false, 
           sameSite: "lax",
           maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
         },

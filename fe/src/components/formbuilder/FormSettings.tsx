@@ -1,13 +1,11 @@
-import type { FormBuilderSettingsField } from "../../types";
+import type { FormBuilderSettingsField, HandleFieldUpdateParams } from "../../../types";
 
-import TextField from "./InputField";
-import SwitchField from "./SwitchField";
-import Textarea from "./TextareaField";
-import SelectField from "./SelectField";
+import TextField from "../shared/InputField";
+import SwitchField from "../shared/SwitchField";
+import Textarea from "../shared/TextareaField";
+import SelectField from "../shared/SelectField";
 
-import styles from "../styles/formSettings.module.css";
-
-import type { HandleFieldUpdateParams } from "../../types";
+import styles from "../../styles/formSettings.module.css";
 
 interface Props {
   formFields: Record<string, FormBuilderSettingsField[]> | null;

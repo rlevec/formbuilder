@@ -1,13 +1,14 @@
-import styles from "../styles/leftPanel.module.css";
+import styles from "../../styles/leftPanel.module.css";
 
-import SearchField from "./SearchField";
-import Button from "./Button";
+import SearchField from "../shared/SearchField";
+import Button from "../shared/Button";
 
-import { useSearch } from "../hooks/useSearch";
+import { useSearch } from "../../hooks/useSearch";
 
-import type { FormBuilderField, FormField } from "../../types";
+import type { FormBuilderField, FormField } from "../../../types";
 
-import { FIELD_ICONS } from "../lib/utils";
+import { FIELD_ICONS } from "../../lib/utils";
+
 interface Props {
   inputFields: FormBuilderField[];
   fieldTypes: FormBuilderField[];

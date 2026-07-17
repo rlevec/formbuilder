@@ -2,9 +2,10 @@ import { useState } from "react";
 
 import { Plus, Minus } from "lucide-react";
 
-import type { FormField, FieldUpdateParams } from "../../types";
+import type { FormField, FieldUpdateParams } from "../../../types";
 
-import styles from "../styles/optionsBuilderField.module.css";
+import styles from "../../styles/optionsBuilderField.module.css";
+
 import Button from "./Button";
 
 interface Props {

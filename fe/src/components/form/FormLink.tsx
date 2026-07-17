@@ -1,8 +1,8 @@
-import type { FormLink as LinkTypes } from "../../types";
+import type { FormLink as LinkTypes } from "../../../types";
 
 import { Link } from "react-router-dom";
 
-import styles from "../styles/formLink.module.css";
+import styles from "../../styles/formLink.module.css";
 
 interface Props {
   link: LinkTypes;

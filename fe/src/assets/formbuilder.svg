@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%" height="100%">
+  <!-- Definitions for gradients and shadows -->
+  <defs>
+    <!-- Modern Gradient for the primary icon and brand -->
+    <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" /> <!-- Royal Blue -->
+      <stop offset="100%" stop-color="#06b6d4" /> <!-- Cyan -->
+    </linearGradient>
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" /> <!-- Indigo -->
+      <stop offset="100%" stop-color="#a855f7" /> <!-- Purple -->
+    </linearGradient>
+    <!-- Soft shadow for the dragging/building layered feel -->
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <drop-shadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g transform="translate(10, 10)">
+    <!-- ================= ICON: The Form Builder "Block" ================= -->
+    <!-- The Form Sheet Container Background -->
+    <rect x="20" y="10" width="130" height="160" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="4" filter="url(#soft-shadow)" />
+    
+    <!-- Top Form Header Line -->
+    <rect x="42" y="32" width="55" height="10" rx="5" fill="#94a3b8" />
+    <rect x="42" y="48" width="30" height="6" rx="3" fill="#cbd5e1" />
+
+    <!-- Form Field Block 1 (A "Text Input" block being built) -->
+    <rect x="40" y="70" width="90" height="30" rx="6" fill="#ffffff" stroke="url(#brand-grad)" stroke-width="2.5" />
+    <circle cx="56" cy="85" r="5" fill="#3b82f6" />
+    <rect x="70" y="81" width="45" height="8" rx="4" fill="#93c5fd" opacity="0.6" />
+
+    <!-- Form Field Block 2 (An "Active Checkbox/Builder" block) -->
+    <g filter="url(#soft-shadow)">
+      <rect x="40" y="112" width="90" height="30" rx="6" fill="url(#accent-grad)" />
+      <!-- White custom check icon -->
+      <rect x="50" y="121" width="12" height="12" rx="3" fill="#ffffff" />
+      <path d="M53 127 l2 2 l4 -4" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <rect x="70" y="123" width="45" height="8" rx="4" fill="#ffffff" />
+    </g>
+
+    <!-- The "Builder" Drag Cursor Handle (Indicates Interactive Drag-and-Drop) -->
+    <g transform="translate(115, 85)" filter="url(#soft-shadow)">
+      <circle cx="15" cy="15" r="20" fill="#ffffff" />
+      <circle cx="15" cy="15" r="16" fill="url(#brand-grad)" />
+      <!-- Drag dots icon -->
+      <circle cx="11" cy="11" r="2" fill="#ffffff" />
+      <circle cx="11" cy="15" r="2" fill="#ffffff" />
+      <circle cx="11" cy="19" r="2" fill="#ffffff" />
+      <circle cx="19" cy="11" r="2" fill="#ffffff" />
+      <circle cx="19" cy="15" r="2" fill="#ffffff" />
+      <circle cx="19" cy="19" r="2" fill="#ffffff" />
+    </g>
+
+    <!-- ================= TYPOGRAPHY ================= -->
+    <!-- "Form" Text -->
+    <text x="205" y="118" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="76" fill="#0f172a" letter-spacing="-1">Form</text>
+    
+    <!-- "builder" Text with Gradient Fill -->
+    <text x="390" y="118" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="76" fill="url(#brand-grad)" letter-spacing="-1">builder</text>
+    
+    <!-- Optional Subtitle/Tagline -->
+    <text x="210" y="152" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="18" fill="#64748b" letter-spacing="4" text-transform="uppercase">Drag • Drop • Deploy</text>
+  </g>
+</svg>

@@ -1,8 +1,8 @@
 import { Search } from "lucide-react";
 
-import styles from "../styles/searchInput.module.css";
+import styles from "../../styles/searchInput.module.css";
 
-import type { FormField } from "../../types";
+import type { FormField } from "../../../types";
 
 interface Props {
   field: FormField;

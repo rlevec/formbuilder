@@ -93,7 +93,6 @@ const isFormValid =
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log("trigger")
     event.preventDefault();
 
     setFormError("");
