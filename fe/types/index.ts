@@ -82,6 +82,7 @@ export type FormComponentType =
   | "switch"
   | "optionsBuilder"
   | "radioGroup"
+  | "checkboxGroup"
   ;
 
 export interface FormFieldSeparateValidator {

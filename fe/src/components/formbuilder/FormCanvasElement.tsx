@@ -10,6 +10,7 @@ import CanvasCheckboxField from "./CanvasCheckboxField";
 import CanvasCheckboxGroupField from "./CanvasCheckboxGroupField";
 import CanvasSwitchField from "./CanvasSwitchComponent";
 import CanvasRatingField from "./CanvasRatingField";
+import CanvasFileUploadField from "./CanvasFileUpload";
 
 interface Props {
   canvasFieldSelected: string | null;
@@ -29,7 +30,8 @@ const FIELD_COMPONENTS: Record<string, React.ComponentType<any>> = {
   checkbox: CanvasCheckboxField,
   checkboxGroup: CanvasCheckboxGroupField,
   toggle: CanvasSwitchField,
-  rating: CanvasRatingField
+  rating: CanvasRatingField,
+  fileUpload: CanvasFileUploadField
 };
 
 export default function FormCanvasElement({

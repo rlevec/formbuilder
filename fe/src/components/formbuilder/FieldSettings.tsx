@@ -10,6 +10,7 @@ import TextareaField from "../shared/TextareaField";
 import SelectField from "../shared/SelectField";
 import RadioGroupField from "../shared/RadioGroupField";
 import OptionsBuilderField from "../shared/OptionsBuilderField";
+import CheckboxGroupField from "../shared/CheckboxGroupField";
 
 import styles from "../../styles/fieldSettings.module.css";
 
@@ -98,7 +99,15 @@ export default function FieldSettings({
                 onSelect={handleFieldUpdate}
               />
             );
-
+   case "checkboxGroup":
+            return (
+              <CheckboxGroupField
+                key={fieldEntry.id}
+                field={fieldEntry}
+                value={Array.isArray(value) ? value : []}
+                onSelect={handleFieldUpdate}
+              />
+            );
           default:
             return null;
         }

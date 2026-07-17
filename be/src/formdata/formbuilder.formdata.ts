@@ -810,117 +810,107 @@ export const generateBaseFieldProperties = ({
         }),
       );
       break;
+
     case "imageUpload":
-      fields.push(
-        generateField({
-          id: crypto.randomUUID(),
-          order: 4,
-          name: "allowedImageTypes",
-          label: "Allowed Image Types",
-          type: "select",
-          inputType: "checkboxGroup",
-          options: ["jpg", "jpeg", "png", "webp"],
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 5,
-          name: "multiple",
-          label: "Allow Multiple Images",
-          type: "switch",
-          inputType: "switch",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "maxFiles",
-          label: "Max Files",
-          type: "number",
-          inputType: "text",
-          placeholder: "e.g. 3",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 7,
-          name: "maxFileSizeMB",
-          label: "Max File Size (MB)",
-          type: "number",
-          inputType: "text",
-          placeholder: "e.g. 5",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 8,
-          name: "showPreview",
-          label: "Show Preview",
-          type: "switch",
-          inputType: "switch",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 9,
-          name: "aspectRatio",
-          label: "Aspect Ratio",
-          type: "select",
-          inputType: "select",
-          options: ["free", "1:1", "4:3", "16:9"],
-        }),
-      );
-      break;
-    case "fileUpload":
-      fields.push(
-        generateField({
-          id: crypto.randomUUID(),
-          order: 4,
-          name: "allowedFileTypes",
-          label: "Allowed File Types",
-          type: "text",
-          inputType: "optionsBuilder",
-          placeholder: "pdf, docx, xlsx, zip",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 5,
-          name: "multiple",
-          label: "Allow Multiple Files",
-          type: "switch",
-          inputType: "switch",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 6,
-          name: "maxFiles",
-          label: "Max Files",
-          type: "number",
-          inputType: "text",
-          placeholder: "e.g. 5",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 7,
-          name: "maxFileSizeMB",
-          label: "Max File Size (MB)",
-          type: "number",
-          inputType: "text",
-          placeholder: "e.g. 10",
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 8,
-          name: "uploadStyle",
-          label: "Upload Style",
-          type: "select",
-          inputType: "radioGroup",
-          options: ["button", "dragAndDrop"],
-        }),
-        generateField({
-          id: crypto.randomUUID(),
-          order: 9,
-          name: "showFileName",
-          label: "Show File Name",
-          type: "switch",
-          inputType: "switch",
-        }),
-      );
+  fields.push(
+    generateField({
+      id: crypto.randomUUID(),
+      order: 5,
+      name: "allowedImageTypes",
+      label: "Allowed Image Types",
+      type: "select",
+      inputType: "checkboxGroup",
+      options: ["jpg", "jpeg", "png", "webp", "gif", "svg"],
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 6,
+      name: "multiple",
+      label: "Allow Multiple Images",
+      type: "switch",
+      inputType: "switch",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 7,
+      name: "maxImages",
+      label: "Max Images",
+      type: "number",
+      inputType: "text",
+      placeholder: "e.g. 5",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 8,
+      name: "maxImageSizeMB",
+      label: "Max Image Size (MB)",
+      type: "number",
+      inputType: "text",
+      placeholder: "e.g. 10",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 9,
+      name: "uploadStyle",
+      label: "Upload Style",
+      type: "select",
+      inputType: "radioGroup",
+      options: ["button", "dragAndDrop"],
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 10,
+      name: "showPreview",
+      label: "Show Image Preview",
+      type: "switch",
+      inputType: "switch",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 11,
+      name: "aspectRatio",
+      label: "Aspect Ratio",
+      type: "select",
+      inputType: "select",
+      options: ["free", "1:1", "4:3", "16:9"],
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 12,
+      name: "cropImage",
+      label: "Require Cropping",
+      type: "switch",
+      inputType: "switch",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 13,
+      name: "maxImageWidth",
+      label: "Max Width (px)",
+      type: "number",
+      inputType: "text",
+      placeholder: "e.g. 1920",
+    }),
+
+    generateField({
+      id: crypto.randomUUID(),
+      order: 14,
+      name: "maxImageHeight",
+      label: "Max Height (px)",
+      type: "number",
+      inputType: "text",
+      placeholder: "e.g. 1080",
+    })
+  );
+  break;
       break;
   }
 
@@ -1430,11 +1420,6 @@ const fieldTypes = [
     frontendSlug: "imageUpload",
     title: "Image Upload",
   },
-  {
-    id: crypto.randomUUID(),
-    frontendSlug: "fileUpload",
-    title: "File Upload",
-  },
 ];
 
 export const formbuilder: FormBuilder = {
@@ -1492,7 +1477,6 @@ export const formbuilder: FormBuilder = {
       toggle: fieldSchemas.toggle,
       rating: fieldSchemas.rating,
       imageUpload: fieldSchemas.imageUpload,
-      fileUpload: fieldSchemas.fileUpload,
     },
   },
 };

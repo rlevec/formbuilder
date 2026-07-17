@@ -95,7 +95,12 @@ export default function useFromBuilder(data: FormBuilder) {
   }: HandleFieldUpdateParams) => {
     const inputType = field?.inputType;
 
-    const normalizedValue = inputType === "switch" ? !!value : String(value);
+    console.log("value", value);
+
+    const arrValField = ["optionsBuilder", "checkboxGroup"];
+    const isArrValField = inputType ? arrValField.includes(inputType) : false;
+
+    const normalizedValue = inputType === "switch" ? !value : String(value);
 
     if (activeSettings === "form") {
       setFormConfigQuery((prev) => ({
@@ -105,25 +110,42 @@ export default function useFromBuilder(data: FormBuilder) {
       return;
     }
 
-    if (inputType === "optionsBuilder") {
+    if (isArrValField) {
       setFieldConfigQuery((prev) => {
         const current = prev[fieldName];
-        const list = Array.isArray(current) && current.every((item) => typeof item === "string")
-          ? current
-          : [];
 
-        if (isOptionDelete) {
+        const list =
+          Array.isArray(current) &&
+          current.every((item) => typeof item === "string")
+            ? current
+            : [];
+
+        const stringValue = String(value);
+
+        if (inputType === "optionsBuilder") {
+          if (isOptionDelete) {
+            return {
+              ...prev,
+              [fieldName]: list.filter((v) => v !== stringValue),
+            };
+          }
+
+          if (list.includes(stringValue)) {
+            return prev;
+          }
+
           return {
             ...prev,
-            [fieldName]: list.filter((v) => v !== value),
+            [fieldName]: [...list, stringValue],
           };
         }
 
-        if (list.includes(String(value))) return prev;
-
+        // checkboxGroup
         return {
           ...prev,
-          [fieldName]: [...list, String(value)],
+          [fieldName]: list.includes(stringValue)
+            ? list.filter((v) => v !== stringValue)
+            : [...list, stringValue],
         };
       });
 
@@ -256,6 +278,7 @@ export default function useFromBuilder(data: FormBuilder) {
       });
     });
   };
+
 
   const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
     if (!canvasEntry) return;
