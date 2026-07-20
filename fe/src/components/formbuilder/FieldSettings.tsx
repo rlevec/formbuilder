@@ -28,10 +28,9 @@ const getValue = (map: Record<string, CanvasFieldValue>, key?: string) => {
 export default function FieldSettings({
   handleFieldUpdate,
   fieldConfigQuery,
-  fieldSettingsConfig
+  fieldSettingsConfig,
 }: Props) {
-
-  if(!fieldSettingsConfig) return null;
+  if (!fieldSettingsConfig) return null;
 
   return (
     <form className={styles.wrapper}>
@@ -99,7 +98,7 @@ export default function FieldSettings({
                 onSelect={handleFieldUpdate}
               />
             );
-   case "checkboxGroup":
+          case "checkboxGroup":
             return (
               <CheckboxGroupField
                 key={fieldEntry.id}
@@ -114,4 +113,4 @@ export default function FieldSettings({
       })}
     </form>
   );
-};
+}

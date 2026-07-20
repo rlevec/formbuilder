@@ -44,13 +44,12 @@ export default function FormBuilder({ data }: Props) {
     selectedFormSettings
   } = useFromBuilder(data)
 
-  console.log("canvasFields", canvasFields)
 
   return (
     <main className={styles.layout}>
       <header className={styles.topbar}>
         <div className={styles.logoContainer}>
-          <Logo className={styles.logo}/>
+          <Logo className={styles.logo} width={160} height={40} />
         </div>
         <Button
           title="Logout"

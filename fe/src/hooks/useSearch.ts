@@ -17,7 +17,7 @@ export function useSearch({
 
   const [results, setResults] = useState<FormBuilderField[]>(data);
 
- const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onChange = (value: string) => {
     setSearch(value);
@@ -29,12 +29,12 @@ export function useSearch({
         setResults(data);
       } else {
         const filtered = data.filter((item) =>
-          filter(item, value.toLowerCase())
+          filter(item, value.toLowerCase()),
         );
         setResults(filtered);
       }
     }, delay);
-  }
+  };
 
   return {
     search,

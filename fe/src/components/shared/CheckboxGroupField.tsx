@@ -15,7 +15,7 @@ export default function CheckboxGroupField({
   value,
   onSelect,
 }: Props) {
-  console.log("value", value);
+
   return (
     <div className={styles.wrapper}>
       {field.label && <label className={styles.label}>{field.label}</label>}

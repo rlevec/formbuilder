@@ -49,15 +49,14 @@ export default function useForm({
         }
       },
       onError: (data: Response) => {
-        console.log("error_data", data);
         setFormError(data.message || data.data.message || "Invalid Request");
       },
     },
   });
 
-const isFormValid =
-  data.fields.length === Object.keys(query).length &&
-  !Object.values(fieldError).some(Boolean);
+  const isFormValid =
+    data.fields.length === Object.keys(query).length &&
+    !Object.values(fieldError).some(Boolean);
 
   const handleChange = ({ fieldName, value, field }: FieldUpdateParams) => {
     setQuery((prev) => ({

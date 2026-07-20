@@ -49,14 +49,3 @@ export const formatFieldName = (value: string) =>
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (c) => c.toUpperCase())
     .trim();
-
-
-export const getStringSetting = ({
-    key,
-    fallback,
-    settings
-  }: {key: string, fallback: string, settings: Record<string, string | boolean>}): string => {
-    const value = settings?.[key];
-
-    return typeof value === "string" ? value : fallback;
-  };

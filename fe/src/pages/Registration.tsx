@@ -8,7 +8,7 @@ import type { AuthFormResponse } from "../../types";
 
 export default function Registration() {
   const { data, isLoading, isError } = useCustomQuery<AuthFormResponse>({
-    key: "auth_login_form",
+    key: "auth_registration_form",
     fetchParams: { url: "/api/formdata/registration" },
   });
 

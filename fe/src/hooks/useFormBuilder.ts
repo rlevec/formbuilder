@@ -76,6 +76,21 @@ export default function useFromBuilder(data: FormBuilder) {
 
   const navigate = useNavigate();
 
+  const list = Array.isArray(data.fieldTypes) ? data.fieldTypes : [];
+
+  const inputFields: FormBuilderField[] = [];
+  const fieldTypes: FormBuilderField[] = [];
+
+  for (const el of list) {
+    if (!el) continue;
+
+    if (el.isInput) {
+      inputFields.push(el);
+    } else {
+      fieldTypes.push(el);
+    }
+  }
+
   const logoutMutation = useCustomMutation({
     fetchParams: {
       url: "/api/auth/logout",
@@ -83,7 +98,7 @@ export default function useFromBuilder(data: FormBuilder) {
     },
     options: {
       onSuccess: () => navigate(routes.client.login, { replace: true }),
-      onError: (data: Response) => console.log("error_data", data),
+      onError: () => {},
     },
   });
 
@@ -94,8 +109,6 @@ export default function useFromBuilder(data: FormBuilder) {
     isOptionDelete,
   }: HandleFieldUpdateParams) => {
     const inputType = field?.inputType;
-
-    console.log("value", value);
 
     const arrValField = ["optionsBuilder", "checkboxGroup"];
     const isArrValField = inputType ? arrValField.includes(inputType) : false;
@@ -157,21 +170,6 @@ export default function useFromBuilder(data: FormBuilder) {
       [fieldName]: normalizedValue,
     }));
   };
-
-  const list = Array.isArray(data.fieldTypes) ? data.fieldTypes : [];
-
-  const inputFields: FormBuilderField[] = [];
-  const fieldTypes: FormBuilderField[] = [];
-
-  for (const el of list) {
-    if (!el) continue;
-
-    if (el.isInput) {
-      inputFields.push(el);
-    } else {
-      fieldTypes.push(el);
-    }
-  }
 
   const handleTabChange = (type: "field" | "form") => setActiveSettings(type);
 
@@ -278,7 +276,6 @@ export default function useFromBuilder(data: FormBuilder) {
       });
     });
   };
-
 
   const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
     if (!canvasEntry) return;

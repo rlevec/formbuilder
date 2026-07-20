@@ -1,9 +1,7 @@
 import type { CanvasFieldsValues } from "../../../types";
-
 import type { ChangeEvent, CSSProperties } from "react";
 
 import { Upload, X } from "lucide-react";
-
 import { useState } from "react";
 
 type Props = {
@@ -13,196 +11,275 @@ type Props = {
   onChange: ({ value }: { value: string | boolean }) => void;
 };
 
-export default function CanvasImageUploadField({
-  params,
-  onChange,
-  value,
-  id,
-}: Props) {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [focused, setFocused] = useState<boolean>(false);
-  const [deleteHovered, setDeleteHovered] = useState<boolean>(false);
+const getAspectRatio = (params: CanvasFieldsValues): string =>
+  typeof params?.aspectRatio === "string"
+    ? params.aspectRatio.replace(":", " / ")
+    : "1 / 1";
 
-  const wrapperStyles: CSSProperties = {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  const labelStyles: CSSProperties = {
-    fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
-    fontWeight:
-      (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
-    margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
-    color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
-  };
-
-  //allow images and pdf only
-
-  const fieldStyles: CSSProperties = {
-    cursor: "pointer",
-    backgroundColor:
-      typeof params?.fieldBackgroundColor === "string"
-        ? params.fieldBackgroundColor
-        : "var(--surface)",
-
-    border:
-      typeof params?.fieldBorder === "string"
-        ? params.fieldBorder
-        : "1px solid var(--border)",
-    borderColor: focused ? "var(--primary)" : "var(--border)",
-    borderRadius:
-      typeof params?.fieldBorderRadius === "string"
-        ? params.fieldBorderRadius
-        : "var(--radius-md)",
-
-    fontSize:
-      typeof params?.fieldFontSize === "string"
-        ? params.fieldFontSize
-        : "var(--text-base)",
-
-    fontWeight:
-      typeof params?.fieldFontWeight === "string" ||
-      typeof params?.fieldFontWeight === "number"
-        ? params.fieldFontWeight
-        : 400,
-
-    aspectRatio: 1,
-    width:
-      typeof params?.fieldHeight === "string" ? params.fieldHeight : "100%",
-    padding:
-      typeof params?.fieldPadding === "string"
-        ? params.fieldPadding
-        : "0 var(--space-3)",
-
-    color:
-      typeof params?.fieldTextColor === "string"
-        ? params.fieldTextColor
-        : "var(--text-primary)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    flexDirection: "column",
-    gap: "var(--space-6)",
-  };
-
-  const allowedTypesStyles: CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  };
-
-  const allowedTypeContainer: CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: focused ? "var(--primary)" : "#6b7280",
-  };
-
-  const allowedTypes = (params?.allowedTypes as string[]) ?? [
+const getAllowedTypes = (params: CanvasFieldsValues): string[] =>
+  (params?.allowedImageTypes as string[]) ?? [
     "png",
     "webp",
     "jpeg",
     "jpg",
   ];
-  const enrichedTypes = allowedTypes?.map((el) => `image/${el}`)?.join("");
+
+const getEnrichedTypes = (allowedTypes: string[]): string =>
+  allowedTypes.map((type) => `image/${type}`).join(",");
+
+const getFieldBorder = (params: CanvasFieldsValues): string =>
+  typeof params?.fieldBorder === "string"
+    ? params.fieldBorder
+    : "1px solid var(--border)";
+
+const getFieldBorderRadius = (params: CanvasFieldsValues): string =>
+  typeof params?.fieldBorderRadius === "string"
+    ? params.fieldBorderRadius
+    : "var(--radius-md)";
+
+const getFieldBackground = (params: CanvasFieldsValues): string =>
+  typeof params?.fieldBackgroundColor === "string"
+    ? params.fieldBackgroundColor
+    : "var(--surface)";
+
+const buildWrapperStyles = (): CSSProperties => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+});
+
+const buildLabelStyles = (params: CanvasFieldsValues): CSSProperties => ({
+  fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
+  fontWeight:
+    (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
+  margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
+  color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
+});
+
+const buildAspectRatioContainerStyles = (aspectRatio: string): CSSProperties => ({
+  width: "100%",
+  position: "relative",
+  aspectRatio,
+});
+
+const buildFieldStyles = (
+  params: CanvasFieldsValues,
+  focused: boolean,
+  fieldBackground: string,
+  fieldBorder: string,
+  fieldBorderRadius: string,
+): CSSProperties => ({
+  cursor: "pointer",
+  width: "100%",
+  height: "100%",
+  boxSizing: "border-box",
+  backgroundColor: fieldBackground,
+  border: fieldBorder,
+  borderColor: focused ? "var(--primary)" : "var(--border)",
+  borderRadius: fieldBorderRadius,
+  fontSize:
+    typeof params?.fieldFontSize === "string"
+      ? params.fieldFontSize
+      : "var(--text-base)",
+  fontWeight:
+    typeof params?.fieldFontWeight === "string" ||
+    typeof params?.fieldFontWeight === "number"
+      ? params.fieldFontWeight
+      : 400,
+  padding:
+    typeof params?.fieldPadding === "string"
+      ? params.fieldPadding
+      : "var(--space-3)",
+  color:
+    typeof params?.fieldTextColor === "string"
+      ? params.fieldTextColor
+      : "var(--text-primary)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  textAlign: "center",
+  gap: "var(--space-6)",
+});
+
+const buildAllowedTypesStyles = (): CSSProperties => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+});
+
+const buildAllowedTypeContainerStyles = (
+  focused: boolean,
+): CSSProperties => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: focused ? "var(--primary)" : "#6b7280",
+});
+
+const buildAllowedTypeDividerStyles = (focused: boolean): CSSProperties => ({
+  height: "25px",
+  width: "2.5px",
+  backgroundColor: focused ? "var(--primary)" : "#6b7280",
+  margin: "0 10px",
+});
+
+const buildImageStyles = (
+  fieldBorder: string,
+  fieldBorderRadius: string,
+): CSSProperties => ({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
+  border: fieldBorder,
+  borderRadius: fieldBorderRadius,
+  boxSizing: "border-box",
+});
+
+const buildDeleteButtonStyles = (): CSSProperties => ({
+  cursor: "pointer",
+  position: "absolute",
+  top: "var(--space-4)",
+  right: "var(--space-4)",
+  zIndex: 2,
+  backgroundColor: "var(--surface)",
+  borderRadius: "8px",
+  padding: "var(--space-2)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+export default function CanvasImageUploadField({
+  params,
+  id,
+}: Props) {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [focused, setFocused] = useState(false);
+  const [deleteHovered, setDeleteHovered] = useState(false);
+
+  const aspectRatio = getAspectRatio(params);
+  const fieldBorder = getFieldBorder(params);
+  const fieldBorderRadius = getFieldBorderRadius(params);
+  const fieldBackground = getFieldBackground(params);
+  const allowedTypes = getAllowedTypes(params);
+  const enrichedTypes = getEnrichedTypes(allowedTypes);
+
+  const wrapperStyles = buildWrapperStyles();
+  const labelStyles = buildLabelStyles(params);
+  const aspectRatioContainer = buildAspectRatioContainerStyles(aspectRatio);
+  const fieldStyles = buildFieldStyles(
+    params,
+    focused,
+    fieldBackground,
+    fieldBorder,
+    fieldBorderRadius,
+  );
+  const allowedTypesStyles = buildAllowedTypesStyles();
+  const allowedTypeContainerStyles = buildAllowedTypeContainerStyles(focused);
+  const allowedTypeDividerStyles = buildAllowedTypeDividerStyles(focused);
+  const imageStyles = buildImageStyles(fieldBorder, fieldBorderRadius);
+  const deleteButtonStyles = buildDeleteButtonStyles();
 
   const fileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      if (objectUrl) setUploadedImage(objectUrl);
-      event.target.value = "";
-    }
+    if (!file) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    setUploadedImage(objectUrl);
+    event.target.value = "";
   };
 
   const fileDelete = () => {
-    setUploadedImage(null)
-  }
-
-  console.log("uploadedImage", uploadedImage);
+    setUploadedImage(null);
+  };
 
   return (
     <div style={wrapperStyles}>
-      {params.label && <label style={labelStyles}>{params.label}</label>}
-      {uploadedImage ? (
-        <div style={{ position: "relative", cursor: "initial" }}>
-          <img
-            style={{ width: "100%", height: "100%", aspectRatio: 1 }}
-            src={uploadedImage}
-            alt="Uploaded Img"
-          />
-          <div
-          onClick={() => fileDelete()}
-          tabIndex={0}
-          onMouseEnter={() => setDeleteHovered(true)}
-          onMouseLeave={() => setDeleteHovered(false)}
-            style={{
-              cursor: "pointer",
-              position: "absolute",
-              top: "var(--space-4)",
-              right: "var(--space-4)",
-              zIndex: "2",
-              backgroundColor: "var(--surface)",
-              borderRadius: "8px",
-              padding: "var(--space-2)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          > 
-            <X color={deleteHovered ? "var(--error)" : "black"} />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <input
-            style={{ display: "none" }}
-            id={id}
-            type="file"
-            accept={enrichedTypes}
-            onChange={(event) => fileChange(event)}
-          />
+      {params.label && (
+        <label style={labelStyles}>
+          {params.label}
+        </label>
+      )}
+
+      <div style={aspectRatioContainer}>
+        <input
+          id={id}
+          type="file"
+          accept={enrichedTypes}
+          onChange={fileChange}
+          style={{ display: "none" }}
+        />
+
+        {uploadedImage ? (
+          <>
+            <img
+              src={uploadedImage}
+              alt="Uploaded Img"
+              width={400}
+              height={400}
+              style={imageStyles}
+            />
+
+            <div
+              onClick={fileDelete}
+              onMouseEnter={() => setDeleteHovered(true)}
+              onMouseLeave={() => setDeleteHovered(false)}
+              style={deleteButtonStyles}
+            >
+              <X
+                color={
+                  deleteHovered
+                    ? "var(--error)"
+                    : "black"
+                }
+                width={20}
+                height={20}
+              />
+            </div>
+          </>
+        ) : (
           <label
-            tabIndex={0}
-            onMouseEnter={() => setFocused(true)}
-            onMouseLeave={() => setFocused(false)}
-            style={{ ...fieldStyles }}
             htmlFor={id}
+            tabIndex={0}
+            style={fieldStyles}
+            onMouseEnter={() =>
+              setFocused(true)
+            }
+            onMouseLeave={() =>
+              setFocused(false)
+            }
           >
             <Upload
-              color={focused ? "var(--primary)" : "#6b7280"}
+              color={
+                focused
+                  ? "var(--primary)"
+                  : "#6b7280"
+              }
               width={50}
               height={50}
             />
+
             <div style={allowedTypesStyles}>
-              {allowedTypes?.map((el, idx) => {
-                const isIdxInbetween = idx > 0 && idx < allowedTypes?.length;
-                return (
-                  <div key={el} style={allowedTypeContainer}>
-                    {isIdxInbetween && (
-                      <div
-                        style={{
-                          height: "25px",
-                          width: "2.5px",
-                          backgroundColor: focused
-                            ? "var(--primary)"
-                            : "#6b7280",
-                          margin: "0 10px",
-                        }}
-                      />
-                    )}
-                    <div>{el}</div>
-                  </div>
-                );
-              })}
+              {allowedTypes.map((type, index) => (
+                <div
+                  key={type}
+                  style={allowedTypeContainerStyles}
+                >
+                  {index > 0 && (
+                    <div style={allowedTypeDividerStyles} />
+                  )}
+
+                  <div>{type}</div>
+                </div>
+              ))}
             </div>
           </label>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

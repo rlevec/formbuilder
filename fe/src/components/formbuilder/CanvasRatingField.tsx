@@ -15,19 +15,82 @@ type Props = {
   onChange: ({ value }: { value: string }) => void;
 };
 
-export default function CanvasRatingField({ params, onChange, value }: Props) {
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+const buildWrapperStyles = (): CSSProperties => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+});
 
+const buildContainerStyles = (params: CanvasFieldsValues): CSSProperties => ({
+  flex: 1,
+  display: "flex",
+  backgroundColor:
+    typeof params?.fieldBackgroundColor === "string"
+      ? params.fieldBackgroundColor
+      : "var(--surface)",
+  border:
+    typeof params?.fieldBorder === "string"
+      ? params.fieldBorder
+      : "1px solid var(--border)",
+  borderRadius:
+    typeof params?.fieldBorderRadius === "string"
+      ? params.fieldBorderRadius
+      : "var(--radius-md)",
+  height:
+    typeof params?.fieldHeight === "string"
+      ? params.fieldHeight
+      : "var(--field-height)",
+  padding:
+    typeof params?.fieldPadding === "string"
+      ? params.fieldPadding
+      : "var(--space-3)",
+  justifyContent:
+    typeof params?.ratingIconsAlignment === "string"
+      ? params.ratingIconsAlignment
+      : "start",
+  alignItems: "center",
+  gap:
+    typeof params?.ratingIconsGap === "string"
+      ? params.ratingIconsGap
+      : "var(--space-4)",
+});
+
+const buildLabelStyles = (params: CanvasFieldsValues): CSSProperties => ({
+  fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
+  fontWeight:
+    (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
+  margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
+  color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
+});
+
+const buildIconSize = (params: CanvasFieldsValues): { width: string; height: string } => {
+  const value = typeof params?.ratingIconHeight === "string" ? params.ratingIconHeight : "25px";
+  return {
+    width: value,
+    height: value,
+  };
+};
+
+const getRatingIcon = (params: CanvasFieldsValues): LucideIcon => {
   const IconMap: Record<string, LucideIcon> = {
     stars: Star,
     hearts: Heart,
     emoji: Smile,
   };
 
-  const Icon =
-    params.ratingStyle && typeof params.ratingStyle === "string"
-      ? IconMap[params.ratingStyle]
-      : Star;
+  return params.ratingStyle && typeof params.ratingStyle === "string"
+    ? IconMap[params.ratingStyle] ?? Star
+    : Star;
+};
+
+export default function CanvasRatingField({ params, onChange, value }: Props) {
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+
+  const wrapperStyles = buildWrapperStyles();
+  const containerStyles = buildContainerStyles(params);
+  const labelStyles = buildLabelStyles(params);
+  const iconSize = buildIconSize(params);
+  const Icon = getRatingIcon(params);
 
   const fieldMaxRating = Number(params.maxRating)
     ? Number(params.maxRating) > 10
@@ -35,69 +98,7 @@ export default function CanvasRatingField({ params, onChange, value }: Props) {
       : Number(params.maxRating)
     : 5;
 
-  const wrapperStyles: CSSProperties = {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  const containerStyles: CSSProperties = {
-    flex: 1,
-    display: "flex",
-    backgroundColor:
-      typeof params?.fieldBackgroundColor === "string"
-        ? params.fieldBackgroundColor
-        : "var(--surface)",
-
-    border:
-      typeof params?.fieldBorder === "string"
-        ? params.fieldBorder
-        : "1px solid var(--border)",
-
-    borderRadius:
-      typeof params?.fieldBorderRadius === "string"
-        ? params.fieldBorderRadius
-        : "var(--radius-md)",
-
-    height:
-      typeof params?.fieldHeight === "string"
-        ? params.fieldHeight
-        : "var(--field-height)",
-
-    padding:
-      typeof params?.fieldPadding === "string"
-        ? params.fieldPadding
-        : "var(--space-3)",
-
-    justifyContent:
-      typeof params?.ratingIconsAlignment === "string"
-        ? params.ratingIconsAlignment
-        : "start",
-    alignItems: "center",
-    gap:
-      typeof params?.ratingIconsGap === "string"
-        ? params.ratingIconsGap
-        : "var(--space-4)",
-  };
-
-  const iconWidth =
-    typeof params?.ratingIconHeight === "string"
-      ? params.ratingIconHeight
-      : "25px";
-  const iconHeight =
-    typeof params?.ratingIconHeight === "string"
-      ? params.ratingIconHeight
-      : "25px";
-
-  const labelStyles: CSSProperties = {
-    fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
-    fontWeight:
-      (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
-    margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
-    color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
-  };
-
-  const handleIconColor = (i: number): { fill: string; stroke: string } => {
+  const handleIconColor = (i: number) => {
     const ratingStyle =
       params.ratingStyle === "hearts" ||
       params.ratingStyle === "stars" ||
@@ -140,22 +141,20 @@ export default function CanvasRatingField({ params, onChange, value }: Props) {
     <div style={wrapperStyles}>
       {params.label && <label style={labelStyles}>{params.label}</label>}
       <div style={containerStyles}>
-        {Array.from({ length: fieldMaxRating }).map((_, i) => {
-          return (
-            <div
-              key={i}
-              onMouseEnter={() => setHoveredRating(i + 1)}
-              onMouseLeave={() => setHoveredRating(null)}
-              onClick={() => onChange({ value: (i + 1).toString() })}
-            >
-              <Icon
-                height={iconHeight}
-                width={iconWidth}
-                {...handleIconColor(i)}
-              />
-            </div>
-          );
-        })}
+        {Array.from({ length: fieldMaxRating }).map((_, i) => (
+          <div
+            key={i}
+            onMouseEnter={() => setHoveredRating(i + 1)}
+            onMouseLeave={() => setHoveredRating(null)}
+            onClick={() => onChange({ value: (i + 1).toString() })}
+          >
+            <Icon
+              height={iconSize.height}
+              width={iconSize.width}
+              {...handleIconColor(i)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
