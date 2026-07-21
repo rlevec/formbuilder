@@ -94,6 +94,8 @@ export default function useForm({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if(!isFormValid) return;
+
     setFormError("");
 
     const schema = buildZodSchema(data.fields);

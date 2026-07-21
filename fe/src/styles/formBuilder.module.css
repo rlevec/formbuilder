@@ -17,26 +17,52 @@
   grid-column: 1 / -1;
   grid-row: 1;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
   align-items: center;
-  justify-content: space-between;
-
-  padding: 0 var(--space-6);
 
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
 
+.headerLeft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-6);
+  border-right: 1px solid var(--border);
+  height: 100%;
+}
+
+.headerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 0 var(--space-6);
+  height: 100%;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 0 var(--space-6);
+  border-left: 1px solid var(--border);
+  height: 100%;
+}
+
 .logoContainer {
     cursor: pointer;
-    width: calc(240px - var(--space-6) * 2);
+    width: 160px;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
 .logo {
- display: flex;
- flex: 1;
+ display: block;
 }
 
 .topbarContent {

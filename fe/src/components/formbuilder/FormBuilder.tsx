@@ -48,14 +48,25 @@ export default function FormBuilder({ data }: Props) {
   return (
     <main className={styles.layout}>
       <header className={styles.topbar}>
-        <div className={styles.logoContainer}>
-          <Logo className={styles.logo} width={160} height={40} />
+        <div className={styles.headerLeft}>
+          <div className={styles.logoContainer}>
+            <Logo className={styles.logo} width={160} height={40} />
+          </div>
         </div>
-        <Button
-          title="Logout"
-          type="button"
-          onClick={() => logoutMutation.mutate({})}
-        />
+        <div className={styles.headerCenter}>
+          <Button
+            title="Save & Publish"
+            type="button"
+            onClick={() => {}}
+          />
+        </div>
+        <div className={styles.headerRight}>
+          <Button
+            title="Logout"
+            type="button"
+            onClick={() => logoutMutation.mutate({})}
+          />
+        </div>
       </header>
       <aside className={styles.leftPanel}>
         <LeftPanel
