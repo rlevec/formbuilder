@@ -51,7 +51,7 @@ export const customFetch = async <TResponse = unknown, TBody = unknown>({
     if (!response.ok) {
       if (response.status === 401) {
         if (typeof window !== "undefined") {
-          window.location.href = "/auth/login";
+          window.location.href = "/login";
         }
       }
 

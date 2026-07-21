@@ -4,9 +4,9 @@ import type { CSSProperties } from "react";
 
 import { Star, Smile, Heart } from "lucide-react";
 
-import { useState } from "react";
-
 import type { LucideIcon } from "lucide-react";
+
+import { useState } from "react";
 
 type Props = {
   id: string;
@@ -21,137 +21,239 @@ const buildWrapperStyles = (): CSSProperties => ({
   flexDirection: "column",
 });
 
-const buildContainerStyles = (params: CanvasFieldsValues): CSSProperties => ({
-  flex: 1,
+const buildContainerStyles = (
+  params: CanvasFieldsValues,
+  hovered: boolean
+): CSSProperties => ({
   display: "flex",
+
   backgroundColor:
     typeof params?.fieldBackgroundColor === "string"
       ? params.fieldBackgroundColor
       : "var(--surface)",
-  border:
-    typeof params?.fieldBorder === "string"
-      ? params.fieldBorder
-      : "1px solid var(--border)",
+
+  border: hovered
+    ? typeof params?.fieldFocusedBorder === "string"
+      ? params.fieldFocusedBorder
+      : "1px solid var(--primary)"
+    : typeof params?.fieldBorder === "string"
+    ? params.fieldBorder
+    : "1px solid var(--border)",
+
   borderRadius:
     typeof params?.fieldBorderRadius === "string"
       ? params.fieldBorderRadius
       : "var(--radius-md)",
+
   height:
     typeof params?.fieldHeight === "string"
       ? params.fieldHeight
       : "var(--field-height)",
+
   padding:
     typeof params?.fieldPadding === "string"
       ? params.fieldPadding
       : "var(--space-3)",
+
   justifyContent:
     typeof params?.ratingIconsAlignment === "string"
       ? params.ratingIconsAlignment
-      : "start",
+      : "flex-start",
+
   alignItems: "center",
+
   gap:
     typeof params?.ratingIconsGap === "string"
       ? params.ratingIconsGap
       : "var(--space-4)",
 });
 
-const buildLabelStyles = (params: CanvasFieldsValues): CSSProperties => ({
-  fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
+const buildLabelStyles = (
+  params: CanvasFieldsValues,
+  hovered: boolean
+): CSSProperties => ({
+  fontSize:
+    (params?.labelFontSize as string) ??
+    "var(--text-sm)",
+
   fontWeight:
-    (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
-  margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
-  color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
+    (params?.labelFontWeight as string) ??
+    "var(--font-weight-normal)",
+
+  margin:
+    (params?.labelMargin as string) ??
+    "0 0 var(--space-2) 0",
+
+  color: hovered
+    ? ((params?.focusedLabelColor as string) ??
+      "var(--primary)")
+    : ((params?.labelTextColor as string) ??
+      "var(--text-secondary)"),
 });
 
-const buildIconSize = (params: CanvasFieldsValues): { width: string; height: string } => {
-  const value = typeof params?.ratingIconHeight === "string" ? params.ratingIconHeight : "25px";
+const buildIconSize = (
+  params: CanvasFieldsValues
+): {
+  width: string;
+  height: string;
+} => {
+  const size =
+    typeof params?.ratingIconHeight === "string"
+      ? params.ratingIconHeight
+      : "25px";
+
   return {
-    width: value,
-    height: value,
+    width: size,
+    height: size,
   };
 };
 
-const getRatingIcon = (params: CanvasFieldsValues): LucideIcon => {
-  const IconMap: Record<string, LucideIcon> = {
+const getRatingIcon = (
+  params: CanvasFieldsValues
+): LucideIcon => {
+  const iconMap: Record<string, LucideIcon> = {
     stars: Star,
     hearts: Heart,
     emoji: Smile,
   };
 
-  return params.ratingStyle && typeof params.ratingStyle === "string"
-    ? IconMap[params.ratingStyle] ?? Star
+  return typeof params?.ratingStyle === "string"
+    ? iconMap[params.ratingStyle] ?? Star
     : Star;
 };
 
-export default function CanvasRatingField({ params, onChange, value }: Props) {
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+export default function CanvasRatingField({
+  params,
+  onChange,
+  value,
+}: Props) {
+  const [hoveredRating, setHoveredRating] =
+    useState<number | null>(null);
+
+  const [hovered, setHovered] =
+    useState<boolean>(false);
 
   const wrapperStyles = buildWrapperStyles();
-  const containerStyles = buildContainerStyles(params);
-  const labelStyles = buildLabelStyles(params);
+
+  const containerStyles = buildContainerStyles(
+    params,
+    hovered
+  );
+
+  const labelStyles = buildLabelStyles(
+    params,
+    hovered
+  );
+
   const iconSize = buildIconSize(params);
+
   const Icon = getRatingIcon(params);
 
-  const fieldMaxRating = Number(params.maxRating)
-    ? Number(params.maxRating) > 10
-      ? 10
-      : Number(params.maxRating)
+  const maxRating = Number(params?.maxRating)
+    ? Math.min(Number(params.maxRating), 10)
     : 5;
 
-  const handleIconColor = (i: number) => {
+
+  const getIconColor = (index: number) => {
     const ratingStyle =
-      params.ratingStyle === "hearts" ||
-      params.ratingStyle === "stars" ||
-      params.ratingStyle === "emoji"
+      typeof params?.ratingStyle === "string"
         ? params.ratingStyle
         : "stars";
 
-    const defaultColors = {
-      fill: "none",
-      stroke: "currentColor",
-    };
 
-    const isSelected = i < Number(value);
-    const isHovered = hoveredRating ? i < hoveredRating : false;
-
-    const regularColorMap: Record<string, { fill: string; stroke: string }> = {
+    const colorMap = {
       stars: {
         fill: "var(--star-bg)",
         stroke: "var(--star)",
       },
+
       hearts: {
         fill: "var(--heart-bg)",
         stroke: "var(--heart)",
       },
+
       emoji: {
-        fill: `var(--rating-${i + 1})`,
+        fill: `var(--rating-${index + 1})`,
         stroke: "#000",
       },
     };
 
-    const colors = regularColorMap[ratingStyle] ?? defaultColors;
+
+    const colors =
+      colorMap[
+        ratingStyle as keyof typeof colorMap
+      ] ?? colorMap.stars;
+
+
+    const selected =
+      index < Number(value);
+
+
+    const preview =
+      hoveredRating !== null &&
+      index < hoveredRating;
+
+
+    const active =
+      selected || preview;
+
 
     return {
-      fill: isSelected || isHovered ? colors.fill : defaultColors.fill,
-      stroke: isSelected || isHovered ? colors.stroke : defaultColors.stroke,
+      fill: active
+        ? colors.fill
+        : "none",
+
+      stroke: active
+        ? colors.stroke
+        : "currentColor",
     };
   };
 
+
   return (
     <div style={wrapperStyles}>
-      {params.label && <label style={labelStyles}>{params.label}</label>}
-      <div style={containerStyles}>
-        {Array.from({ length: fieldMaxRating }).map((_, i) => (
+      {params?.label && (
+        <label style={labelStyles}>
+          {params.label}
+        </label>
+      )}
+
+      <div
+        style={containerStyles}
+        onMouseEnter={() =>
+          setHovered(true)
+        }
+        onMouseLeave={() =>
+          setHovered(false)
+        }
+      >
+        {Array.from({
+          length: maxRating,
+        }).map((_, index) => (
           <div
-            key={i}
-            onMouseEnter={() => setHoveredRating(i + 1)}
-            onMouseLeave={() => setHoveredRating(null)}
-            onClick={() => onChange({ value: (i + 1).toString() })}
+            key={index}
+            style={{
+              cursor: "pointer",
+            }}
+
+            onMouseEnter={() =>
+              setHoveredRating(index + 1)
+            }
+
+            onMouseLeave={() =>
+              setHoveredRating(null)
+            }
+
+            onClick={() =>
+              onChange({
+                value: (index + 1).toString(),
+              })
+            }
           >
             <Icon
-              height={iconSize.height}
               width={iconSize.width}
-              {...handleIconColor(i)}
+              height={iconSize.height}
+              {...getIconColor(index)}
             />
           </div>
         ))}

@@ -18,7 +18,7 @@ const URL_MAP: Record<string, string> = {
 };
 
 const ROUTE_MAP: Record<string, string> = {
-  registration: "/auth/login",
+  registration: "/login",
   login: "/",
 };
 

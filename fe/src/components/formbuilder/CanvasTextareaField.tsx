@@ -2,6 +2,8 @@ import type { CanvasFieldsValues } from "../../../types";
 
 import type { CSSProperties } from "react";
 
+import { useState } from "react";
+
 type Props = {
   id: string;
   params: CanvasFieldsValues;
@@ -15,67 +17,107 @@ const buildWrapperStyles = (): CSSProperties => ({
   flexDirection: "column",
 });
 
-const buildLabelStyles = (params: CanvasFieldsValues): CSSProperties => ({
+const buildLabelStyles = (
+  params: CanvasFieldsValues,
+  focused: boolean
+): CSSProperties => ({
   fontSize: (params?.labelFontSize as string) ?? "var(--text-sm)",
   fontWeight:
     (params?.labelFontWeight as string) ?? "var(--font-weight-normal)",
   margin: (params?.labelMargin as string) ?? "0 0 var(--space-2) 0",
-  color: (params?.labelTextColor as string) ?? "var(--text-secondary)",
+  color: focused
+    ? ((params?.focusedLabelColor as string) ?? "var(--primary)")
+    : ((params?.labelTextColor as string) ?? "var(--text-secondary)"),
 });
 
-const buildFieldStyles = (params: CanvasFieldsValues): CSSProperties => ({
+const buildFieldStyles = (
+  params: CanvasFieldsValues,
+  focused: boolean
+): CSSProperties => ({
   backgroundColor:
     typeof params?.fieldBackgroundColor === "string"
       ? params.fieldBackgroundColor
       : "var(--surface)",
-  border:
-    typeof params?.fieldBorder === "string"
-      ? params.fieldBorder
-      : "1px solid var(--border)",
+
+  border: focused
+    ? typeof params?.fieldFocusedBorder === "string"
+      ? params.fieldFocusedBorder
+      : "1px solid var(--primary)"
+    : typeof params?.fieldBorder === "string"
+    ? params.fieldBorder
+    : "1px solid var(--border)",
+
   borderRadius:
     typeof params?.fieldBorderRadius === "string"
       ? params.fieldBorderRadius
       : "var(--radius-md)",
+
   fontSize:
     typeof params?.fieldFontSize === "string"
       ? params.fieldFontSize
       : "var(--text-base)",
+
   fontWeight:
     typeof params?.fieldFontWeight === "string" ||
     typeof params?.fieldFontWeight === "number"
       ? params.fieldFontWeight
       : 400,
+
   height:
     typeof params?.fieldHeight === "string"
       ? params.fieldHeight
       : "var(--field-height)",
+
   padding:
     typeof params?.fieldPadding === "string"
       ? params.fieldPadding
-      : "0 var(--space-3)",
+      : "var(--space-3)",
+
   color:
     typeof params?.fieldTextColor === "string"
       ? params.fieldTextColor
       : "var(--text-primary)",
+
+  outline: "none",
+
   resize: "vertical",
+
   minHeight: "200px",
+
   maxHeight: "400px",
 });
 
-export default function CanvasTextareaField({ params, id, onChange, value }: Props) {
+export default function CanvasTextareaField({
+  params,
+  id,
+  onChange,
+  value,
+}: Props) {
+  const [focused, setFocused] = useState(false);
+
   const wrapperStyles = buildWrapperStyles();
-  const labelStyles = buildLabelStyles(params);
-  const fieldStyles = buildFieldStyles(params);
+  const labelStyles = buildLabelStyles(params, focused);
+  const fieldStyles = buildFieldStyles(params, focused);
 
   return (
     <div style={wrapperStyles}>
-      {params?.label && <label style={labelStyles}>{params.label}</label>}
+      {params?.label && (
+        <label style={labelStyles}>
+          {params.label}
+        </label>
+      )}
       <textarea
-        onChange={(event) => onChange({ value: event?.target?.value })}
+        name={id}
         value={value}
         style={fieldStyles}
         placeholder={(params?.placeholder as string) ?? "Enter value..."}
-        name={id}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onChange={(event) =>
+          onChange({
+            value: event.target.value,
+          })
+        }
       />
     </div>
   );

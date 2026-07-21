@@ -153,7 +153,6 @@ export default function useFromBuilder(data: FormBuilder) {
           };
         }
 
-        // checkboxGroup
         return {
           ...prev,
           [fieldName]: list.includes(stringValue)
@@ -300,6 +299,8 @@ export default function useFromBuilder(data: FormBuilder) {
 
     setFieldConfigQuery(queryObj);
     setCanvasFieldSelected(canvasEntry.id);
+    setSelectedDefaultFieldConfig(null)
+
   };
 
   const updateCanvasFieldValue = (
