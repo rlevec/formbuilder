@@ -279,13 +279,21 @@ export default function useFromBuilder(data: FormBuilder) {
   const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
     if (!canvasEntry) return;
 
+    console.log("canvasEntry", { canvasEntry, fields: data.settings.fields });
+
+    const fields = data.settings.fields;
+
     const inputType = canvasEntry.type;
 
     const dataFields = data?.settings?.fields;
 
     const matchFields = dataFields?.[inputType];
 
+    console.log("matchFields", matchFields);
+
     const queryObj: CanvasFieldsValues = {};
+
+    const targetConfig = fields[inputType] ?? [];
 
     if (!matchFields) return;
 
@@ -297,10 +305,12 @@ export default function useFromBuilder(data: FormBuilder) {
       }
     }
 
-    setFieldConfigQuery(queryObj);
-    setCanvasFieldSelected(canvasEntry.id);
-    setSelectedDefaultFieldConfig(null)
-
+    if (Array.isArray(targetConfig) && targetConfig.length > 0) {
+      setFieldSettingsConfig(targetConfig);
+      setFieldConfigQuery(queryObj);
+      setCanvasFieldSelected(canvasEntry.id);
+      setSelectedDefaultFieldConfig(null);
+    }
   };
 
   const updateCanvasFieldValue = (

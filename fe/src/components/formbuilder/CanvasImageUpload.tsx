@@ -2,6 +2,7 @@ import type { CanvasFieldsValues } from "../../../types";
 import type { ChangeEvent, CSSProperties } from "react";
 
 import { Upload, X } from "lucide-react";
+
 import { useState } from "react";
 
 type Props = {
@@ -207,9 +208,12 @@ const buildDeleteButtonStyles = (): CSSProperties => ({
   alignItems: "center",
 });
 
-export default function CanvasImageUploadField({ params, id }: Props) {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-
+export default function CanvasImageUploadField({
+  params,
+  id,
+  onChange,
+  value,
+}: Props) {
   const [hovered, setHovered] = useState(false);
 
   const [focused, setFocused] = useState(false);
@@ -243,22 +247,18 @@ export default function CanvasImageUploadField({ params, id }: Props) {
 
     const objectUrl = URL.createObjectURL(file);
 
-    setUploadedImage(objectUrl);
+    onChange({ value: objectUrl });
 
     event.target.value = "";
   };
 
   const fileDelete = () => {
-    setUploadedImage(null);
+    onChange({ value: "" });
   };
 
   return (
     <div style={wrapperStyles}>
-      {params?.label && (
-        <label style={labelStyles}>
-          {params.label}
-        </label>
-      )}
+      {params?.label && <label style={labelStyles}>{params.label}</label>}
 
       <div style={aspectRatioStyles}>
         <input
@@ -271,9 +271,9 @@ export default function CanvasImageUploadField({ params, id }: Props) {
           }}
         />
 
-        {uploadedImage ? (
+        {value !== "" ? (
           <>
-            <img src={uploadedImage} alt="Uploaded" style={imageStyles} />
+            <img src={value} alt="Uploaded" style={imageStyles} />
 
             <div
               style={deleteStyles}
