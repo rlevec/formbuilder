@@ -5,6 +5,7 @@ export const buildZodSchema = (fields: FormField[]) => {
   const shape: Record<string, z.ZodTypeAny> = {};
 
   for (const field of fields) {
+    if (!field.name) continue;
 
     let schema = z.string().trim();
 
