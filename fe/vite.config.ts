@@ -8,6 +8,24 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [react(), svgr(), babel({ presets: [reactCompilerPreset()] })],
+    build: {
+      minify: "terser",
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes("node_modules/react")) {
+              return "vendor-react";
+            }
+            if (id.includes("node_modules/@tanstack/react-query")) {
+              return "vendor-query";
+            }
+            if (id.includes("node_modules/zod")) {
+              return "vendor-utils";
+            }
+          },
+        },
+      },
+    },
     server: {
       proxy: {
         "/api": {

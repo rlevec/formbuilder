@@ -2,6 +2,8 @@ import FormCanvasElement from "./FormCanvasElement";
 
 import type { CanvasFieldInstance, CanvasFieldValue } from "../../../types";
 
+import styles from "../../styles/canvas.module.css"
+
 interface Props {
   canvasFieldSelected: string | null;
   data: CanvasFieldInstance[];
@@ -66,6 +68,7 @@ const buildCanvasStyles = (
     fallback: "1px solid var(--border)",
     settings,
   }),
+  overflow: "auto"
 });
 
 const buildGridStyles = (
@@ -255,7 +258,7 @@ export default function FormCanvas({
   if (!data) return null;
 
   return (
-    <div style={canvasStyles}>
+    <div style={canvasStyles} className={styles.canvas}>
       <h1 style={headerStyles}>{formTitle}</h1>
       <p style={descriptionStyles}>{formDescription}</p>
 

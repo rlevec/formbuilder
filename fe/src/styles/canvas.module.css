@@ -1,0 +1,19 @@
+.canvas::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.canvas::-webkit-scrollbar-track {
+  background: var(--surface-muted);
+}
+
+.canvas::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--surface-muted);
+  cursor: pointer;
+}
+
+.canvas::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
