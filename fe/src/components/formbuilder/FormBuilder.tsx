@@ -1,11 +1,9 @@
 import styles from "../../styles/formBuilder.module.css";
 
-import Button from "../shared/Button";
 import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
 import FormCanvas from "./FormCanvas";
-
-import Logo from "../../assets/formbuilder.svg?react"
+import FormHeader from "./FormHeader";
 
 import {
   type FormBuilder,
@@ -49,25 +47,7 @@ export default function FormBuilder({ data }: Props) {
   return (
     <main className={styles.layout}>
       <header className={styles.topbar}>
-        <div className={styles.headerLeft}>
-          <div className={styles.logoContainer}>
-            <Logo className={styles.logo} width={160} height={40} />
-          </div>
-        </div>
-        <div className={styles.headerCenter}>
-          <Button
-            title="Save"
-            type="button"
-            onClick={() => saveTemplate()}
-          />
-        </div>
-        <div className={styles.headerRight}>
-          <Button
-            title="Logout"
-            type="button"
-            onClick={() => logout()}
-          />
-        </div>
+        <FormHeader logout={logout} saveTemplate={saveTemplate}/>
       </header>
       <aside className={styles.leftPanel}>
         <LeftPanel

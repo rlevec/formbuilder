@@ -17,19 +17,20 @@ export const createTemplate = async (data: {
     };
 
     const result = await pool.query(
-      `
-      INSERT INTO form_templates (
-        user_id,
-        templates
-      )
-      VALUES ($1, $2)
-      RETURNING *
-      `,
-      [data.userId, JSON.stringify([template])]
+    `
+        INSERT INTO form_templates (user_id, templates)
+        VALUES ($1, $2::jsonb)
+        ON CONFLICT (user_id)
+        DO UPDATE
+        SET templates = form_templates.templates || EXCLUDED.templates
+        RETURNING *;
+    `,
+      [data.userId, JSON.stringify([template])],
     );
 
     return result.rows[0];
   } catch (error) {
-    return throwNewError(400, "DB insertion error")
+    console.log("error", error)
+    return throwNewError(400, "DB insertion error");
   }
 };
