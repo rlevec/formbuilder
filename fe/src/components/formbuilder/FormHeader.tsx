@@ -28,10 +28,10 @@ export default function FormHeader({ saveTemplate, logout }: Props) {
         </Button>
       </div>
       <div className={styles.headerRight}>
-        <Button type="button">
+        <Button type="button" visual="success">
           <UserPen />
         </Button>
-        <Button type="button" onClick={() => logout()}>
+        <Button visual="danger" type="button" onClick={() => logout()}>
           <LogOut />
         </Button>
       </div>
