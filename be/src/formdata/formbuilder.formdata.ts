@@ -2321,6 +2321,35 @@ const fieldSchemas = {
   }),
 };
 
+const idField = generateField({
+  frontendSlug: "formId",
+  label: "ID",
+  name: "formId",
+  type: "text",
+  inputType: "text",
+  placeholder: "Enter form ID",
+  valueType: "string",
+  required: true,
+  requiredMessage: "ID is required",
+  validator: "/^[a-zA-Z0-9 ]{3,50}$/",
+  validationMessage: "3-50 characters, letters and numbers only",
+});
+
+const nameField = generateField({
+  frontendSlug: "formName",
+  label: "Name",
+  name: "formName",
+  type: "text",
+  inputType: "text",
+  placeholder: "Enter form name",
+  valueType: "string",
+  required: true,
+  requiredMessage: "Name is required",
+  validator: "/^[a-zA-Z0-9 ]{3,50}$/",
+  validationMessage: "3-50 characters, letters and numbers only",
+});
+
+
 const titleField = generateField({
   frontendSlug: "formTitle",
   label: "Title",
@@ -2768,6 +2797,7 @@ export const formbuilder: FormBuilder = {
   fieldTypes,
   settings: {
     form: {
+      information: [idField, nameField],
       display: [titleField, descriptionField],
       submission: [submitButtonTextField, successMessageField],
       behavior: [

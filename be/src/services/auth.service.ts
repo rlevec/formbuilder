@@ -10,14 +10,14 @@ import { hashPassword, comparePassword } from "../utils/auth.utils"
 export const login = async (body: LoginInput) => {
   const user = await findUserByEmail(body.email as string);
 
-  if (!user) throwNewError(400, "Invalid credentials!");
+  if (!user) return throwNewError(400, "Invalid credentials!");
 
   const passwordMatch = await comparePassword({
     password: body.password as string,
     hashedPassword: user.password,
   });
 
-  if (!passwordMatch) throwNewError(400, "Invalid credentials!");
+  if (!passwordMatch) return throwNewError(400, "Invalid credentials!");
 
   return {
     id: user.id,
@@ -29,7 +29,7 @@ export const register = async(body: RegisterInput) => {
     
     const exists = await findUserByEmail(body.email as string)
 
-    if(exists) throwNewError(400, "Duplicate email!")
+    if(exists) return throwNewError(400, "Duplicate email!")
 
     const hashedPassword = await hashPassword(body.password as string);
 
@@ -38,7 +38,7 @@ export const register = async(body: RegisterInput) => {
         password: hashedPassword,
     });
 
-    if(!createUserResponse) throwNewError(400, "User DB creation error!")
+    if(!createUserResponse) return throwNewError(400, "User DB creation error!")
 
     return {
         error: false,

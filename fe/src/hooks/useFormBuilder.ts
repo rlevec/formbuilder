@@ -21,6 +21,7 @@ import {
   type HandleFieldUpdateParams,
   type FormField,
 } from "../../types";
+
 import { routes } from "../router/routes";
 
 const getDefaultValue = (type: string): CanvasFieldValue => {
@@ -93,11 +94,22 @@ export default function useFromBuilder(data: FormBuilder) {
 
   const logoutMutation = useCustomMutation({
     fetchParams: {
-      url: "/api/auth/logout",
+      url: routes?.server?.logout,
       options: { method: "POST" },
     },
     options: {
       onSuccess: () => navigate(routes.client.login, { replace: true }),
+      onError: () => {},
+    },
+  });
+
+  const saveTemplateMutation = useCustomMutation({
+    fetchParams: {
+      url: routes?.server?.saveTemplate,
+      options: { method: "POST" },
+    },
+    options: {
+      onSuccess: () => {},
       onError: () => {},
     },
   });
@@ -279,8 +291,6 @@ export default function useFromBuilder(data: FormBuilder) {
   const handleSelectCanvasField = (canvasEntry: CanvasFieldInstance) => {
     if (!canvasEntry) return;
 
-    console.log("canvasEntry", { canvasEntry, fields: data.settings.fields });
-
     const fields = data.settings.fields;
 
     const inputType = canvasEntry.type;
@@ -288,8 +298,6 @@ export default function useFromBuilder(data: FormBuilder) {
     const dataFields = data?.settings?.fields;
 
     const matchFields = dataFields?.[inputType];
-
-    console.log("matchFields", matchFields);
 
     const queryObj: CanvasFieldsValues = {};
 
@@ -338,6 +346,53 @@ export default function useFromBuilder(data: FormBuilder) {
     }));
   };
 
+  const saveTemplate = (): void => {
+    const generatePayload = () => {
+      const formConfig = Object.values(data?.settings?.form || {})
+        .flat()
+        .reduce<Record<string, string>>((acc, el) => {
+          const slug = el.frontendSlug ?? "";
+
+          if (slug) {
+            acc[slug] = "";
+          }
+
+          return acc;
+        }, {});
+
+      const enrichedForm: Record<string, string | boolean> = {};
+
+      for (const key in formConfig) {
+        enrichedForm[key] = selectedFormSettings[key] ?? "";
+      }
+
+      const enrichedFields = canvasFields?.map((el) => {
+        return {
+          ...el,
+          params: Object.fromEntries(
+            Object.entries(el.params ?? {}).map(([key, value]) => [
+              key,
+              value ?? "",
+            ]),
+          ),
+        };
+      });
+
+      return {
+        form: enrichedForm,
+        fields: enrichedFields,
+      };
+    };
+
+    const payload = generatePayload();
+
+    saveTemplateMutation.mutate(payload);
+  };
+
+  const logout = () => {
+    logoutMutation.mutate({})
+  }
+
   return {
     dragOverIdRef,
     dragStartIdRef,
@@ -353,7 +408,7 @@ export default function useFromBuilder(data: FormBuilder) {
     setFieldSettingsConfig,
     canvasFields,
     setCanvasFields,
-    logoutMutation,
+    logout,
     handleFieldUpdate,
     inputFields,
     fieldTypes,
@@ -371,5 +426,6 @@ export default function useFromBuilder(data: FormBuilder) {
     updateCanvasFieldValue,
     updateFormSetting,
     selectedFormSettings,
+    saveTemplate,
   };
 }

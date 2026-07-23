@@ -26,7 +26,7 @@ export default function FormBuilder({ data }: Props) {
     selectedDefaultFieldConfig,
     fieldSettingsConfig,
     canvasFields,
-    logoutMutation,
+    logout,
     handleFieldUpdate,
     inputFields, fieldTypes,
     handleTabChange,
@@ -41,7 +41,8 @@ export default function FormBuilder({ data }: Props) {
     canvasFieldSelected,
     updateCanvasFieldValue,
     updateFormSetting,
-    selectedFormSettings
+    selectedFormSettings,
+    saveTemplate
   } = useFromBuilder(data)
 
 
@@ -55,16 +56,16 @@ export default function FormBuilder({ data }: Props) {
         </div>
         <div className={styles.headerCenter}>
           <Button
-            title="Save & Publish"
+            title="Save"
             type="button"
-            onClick={() => {}}
+            onClick={() => saveTemplate()}
           />
         </div>
         <div className={styles.headerRight}>
           <Button
             title="Logout"
             type="button"
-            onClick={() => logoutMutation.mutate({})}
+            onClick={() => logout()}
           />
         </div>
       </header>

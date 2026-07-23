@@ -140,3 +140,14 @@ export interface FormBuilderField {
   type?: string;
   placeholder?: string;
 }
+
+export type CanvasFieldValue = string | boolean | string[] | number;
+
+export type CanvasFieldsValues = Record<string, CanvasFieldValue>;
+
+export type CanvasFieldInstance = {
+  id: string;
+  params: CanvasFieldsValues;
+  type: string;
+  value: CanvasFieldValue;
+};

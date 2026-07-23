@@ -39,6 +39,8 @@ export const customFetch = async <TResponse = unknown, TBody = unknown>({
       config.body = options.body;
     } else {
       headers["Content-Type"] = "application/json";
+      console.log("REQUEST BODY OBJECT", options.body);
+console.log("REQUEST BODY JSON", JSON.stringify(options.body));
       config.body = JSON.stringify(options.body);
     }
   }
