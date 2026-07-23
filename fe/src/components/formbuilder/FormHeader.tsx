@@ -6,12 +6,17 @@ import Button from "../shared/Button";
 
 import { Layout, SaveCheck, LogOut, UserPen } from "lucide-react";
 
+import useModalStore from "../../store/useModalStore";
+
 type Props = {
   saveTemplate: () => void;
   logout: () => void;
 };
 
 export default function FormHeader({ saveTemplate, logout }: Props) {
+
+  const { toggle } = useModalStore()
+
   return (
     <>
       <div className={styles.headerLeft}>
@@ -20,7 +25,7 @@ export default function FormHeader({ saveTemplate, logout }: Props) {
         </div>
       </div>
       <div className={styles.headerCenter}>
-        <Button>
+        <Button type="button" onClick={() => toggle()}>
           <Layout />
         </Button>
         <Button type="button" onClick={() => saveTemplate()}>
@@ -28,7 +33,7 @@ export default function FormHeader({ saveTemplate, logout }: Props) {
         </Button>
       </div>
       <div className={styles.headerRight}>
-        <Button type="button" visual="success">
+        <Button type="button" visual="success" onClick={() => toggle()}>
           <UserPen />
         </Button>
         <Button visual="danger" type="button" onClick={() => logout()}>

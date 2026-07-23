@@ -4,6 +4,7 @@ import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
 import FormCanvas from "./FormCanvas";
 import FormHeader from "./FormHeader";
+import Modal from "../modal/Modal";
 
 import {
   type FormBuilder,
@@ -15,7 +16,11 @@ interface Props {
 
 import useFromBuilder from "../../hooks/useFormBuilder";
 
+import useModalStore from "../../store/useModalStore";
+
 export default function FormBuilder({ data }: Props) {
+
+  const { open } = useModalStore()
 
   const {
     activeSettings,
@@ -46,6 +51,7 @@ export default function FormBuilder({ data }: Props) {
 
   return (
     <main className={styles.layout}>
+      {open && <Modal/>}
       <header className={styles.topbar}>
         <FormHeader logout={logout} saveTemplate={saveTemplate}/>
       </header>
