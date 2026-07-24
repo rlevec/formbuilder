@@ -78,15 +78,12 @@ export default function Modal() {
 
   const renderTemplateCard = (
     template: TemplateResponseData,
-    index: number,
+    idx?: number
   ) => {
     return (
       <div
-        className={`
-          ${styles.templateCard}
-          ${slideIdx === index ? styles.selectedCard : ""}
-        `}
-        onClick={() => setSlideIdx(index)}
+        key={idx}
+        className={styles.templateCard}
       >
         <span className={styles.badge}>{template.form.formId}</span>
         <h3>{template.form.formName}</h3>
@@ -134,32 +131,40 @@ export default function Modal() {
     return (
       <>
         <div className={styles.viewSwitcher}>
-          <button
-            className={templateView === "slider" ? styles.activeView : ""}
+          <Button
             onClick={() => setTemplateView("slider")}
-            title="Slider view"
+            additionalClassName={
+              templateView === "slider" ? styles.activeView : styles.viewBtn
+            }
           >
             <PanelsTopLeft size={20} />
-          </button>
-          <button
-            className={templateView === "grid" ? styles.activeView : ""}
+          </Button>
+          <Button
+            additionalClassName={
+              templateView === "grid" ? styles.activeView : styles.viewBtn
+            }
             onClick={() => setTemplateView("grid")}
-            title="Grid view"
           >
             <LayoutGrid size={20} />
-          </button>
+          </Button>
         </div>
         {templateView === "slider" && (
           <div className={styles.slider}>
-            <ChevronLeft
-              className={styles.arrow}
+            <Button
+              additionalClassName={styles.arrow}
+              visual="secondary"
               onClick={() => handleSlideChange("prev")}
-            />
-            {renderTemplateCard(templates[slideIdx], slideIdx)}
-            <ChevronRight
-              className={styles.arrow}
+            >
+              <ChevronLeft />
+            </Button>
+            {renderTemplateCard(templates[slideIdx])}
+            <Button
+              additionalClassName={styles.arrow}
+              visual="secondary"
               onClick={() => handleSlideChange("next")}
-            />
+            >
+              <ChevronRight />
+            </Button>
             <div className={styles.counter}>
               {slideIdx + 1}/{templates.length}
             </div>
