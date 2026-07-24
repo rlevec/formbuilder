@@ -1,10 +1,13 @@
 import styles from "../../styles/formBuilder.module.css";
 
+import { lazy, Suspense } from "react";
+
 import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
 import FormCanvas from "./FormCanvas";
 import FormHeader from "./FormHeader";
-import Modal from "../modal/Modal";
+
+const Modal = lazy(() => import("../modal/Modal"))
 
 import {
   type FormBuilder,
@@ -51,7 +54,11 @@ export default function FormBuilder({ data }: Props) {
 
   return (
     <main className={styles.layout}>
-      {open && <Modal/>}
+      {open && (
+        <Suspense fallback={<div>Loading Modal...</div>}>
+          <Modal/>
+        </Suspense>
+      )}
       <header className={styles.topbar}>
         <FormHeader logout={logout} saveTemplate={saveTemplate}/>
       </header>
