@@ -426,6 +426,6 @@ export default function useFromBuilder(data: FormBuilder) {
     updateCanvasFieldValue,
     updateFormSetting,
     selectedFormSettings,
-    saveTemplate,
+    saveTemplate
   };
 }

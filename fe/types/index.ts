@@ -200,3 +200,16 @@ export type CanvasFieldInstance = {
   type: string;
   value: CanvasFieldValue;
 };
+
+export type TemplateResponseData = {
+  createdAt: string;
+  id: string;
+  form: Record<string, string | boolean>
+  fields: CanvasFieldInstance[]
+}
+
+export type GetTemplatesResponse = {
+  error: boolean;
+  message: string;
+  data: TemplateResponseData
+}

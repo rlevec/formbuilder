@@ -4,7 +4,9 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 
 import { formbuilder } from "../formdata/formbuilder.formdata";
 
-import { saveTemplate } from "../services/formdata.service";
+import { saveTemplateController } from "../controllers/saveTemplate.controller";
+
+import { getTemplatesController } from "../controllers/getTemplates.controller";
 
 const router = Router();
 
@@ -13,7 +15,11 @@ router.get("/", authMiddleware, (req, res) => {
 })
 
 router.post("/template/save", authMiddleware, (req, res) => {
-  return saveTemplate(req, res)
+  return saveTemplateController(req, res)
+})
+
+router.get("/templates", authMiddleware, (req, res) => {
+  return getTemplatesController(req, res)
 })
 
 export default router;

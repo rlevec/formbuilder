@@ -6,9 +6,7 @@ import { throwNewError } from "../utils/global.utils";
 
 import type { CanvasFieldInstance } from "../types";
 
-import { Request, Response } from "express";
-
-import { createTemplate } from "../repositories/formbuilder.repository";
+import { createTemplate, getUserTemplates } from "../repositories/formbuilder.repository";
 
 const FORMDATA_MAP = {
   login: loginFormdata,
@@ -34,21 +32,23 @@ export const getFormdata = ({ type }: { type: string }) => {
   };
 };
 
-export const saveTemplate = async (req: Request, res: Response) => {
-  const body = req.body;
+type SaveTemplateParams = {
+  data: {
+    fields: CanvasFieldInstance[];
+    form: Record<string, string | boolean>;
+  };
+  userId?: number;
+};
 
-  const userId = req.session.user?.id;
-
-  console.log("userId", userId);
-
+export const saveTemplate = async ({
+  data,
+  userId,
+}: SaveTemplateParams) => {
   if (!userId) {
     return throwNewError(400, "User ID is missing");
   }
 
-  const { fields, form } = body as {
-    fields: CanvasFieldInstance[];
-    form: Record<string, string | boolean>;
-  };
+  const { fields, form } = data;
 
   const createTemplateResponse = await createTemplate({
     userId,
@@ -60,8 +60,26 @@ export const saveTemplate = async (req: Request, res: Response) => {
     return throwNewError(400, "Template DB creation error!");
   }
 
-  return res.json({
+  return {
     error: false,
     message: "You have successfully created template!",
-  });
+  };
 };
+
+export const getTemplates = async(userId?: number) => {
+  if (!userId) {
+    return throwNewError(400, "User ID is missing");
+  }
+
+  const getTemplatesResponse = await getUserTemplates(userId)
+
+  if (!getTemplatesResponse) {
+    return throwNewError(400, "Template DB fetch error!");
+  }
+
+  return {
+    error: false,
+    message: "You have successfully fetched templates!",
+    data: getTemplatesResponse
+  };
+}

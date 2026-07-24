@@ -4,7 +4,7 @@ import Logo from "../../assets/formbuilder.svg?react";
 
 import Button from "../shared/Button";
 
-import { Layout, SaveCheck, LogOut, UserPen } from "lucide-react";
+import { Layout, SaveCheck, LogOut, UserPen, Trash } from "lucide-react";
 
 import useModalStore from "../../store/useModalStore";
 
@@ -14,8 +14,7 @@ type Props = {
 };
 
 export default function FormHeader({ saveTemplate, logout }: Props) {
-
-  const { toggle } = useModalStore()
+  const { toggle } = useModalStore();
 
   return (
     <>
@@ -25,15 +24,20 @@ export default function FormHeader({ saveTemplate, logout }: Props) {
         </div>
       </div>
       <div className={styles.headerCenter}>
-        <Button type="button" onClick={() => toggle()}>
+        <Button type="button" onClick={() => toggle("templates")}>
           <Layout />
         </Button>
-        <Button type="button" onClick={() => saveTemplate()}>
-          <SaveCheck />
-        </Button>
+        <div className={styles.templateActionBtns}>
+          <Button visual="danger" type="button" onClick={() => {}}>
+            <Trash />
+          </Button>
+          <Button visual="success" type="button" onClick={() => saveTemplate()}>
+            <SaveCheck />
+          </Button>
+        </div>
       </div>
       <div className={styles.headerRight}>
-        <Button type="button" visual="success" onClick={() => toggle()}>
+        <Button type="button" visual="success" onClick={() => toggle("profile")}>
           <UserPen />
         </Button>
         <Button visual="danger" type="button" onClick={() => logout()}>

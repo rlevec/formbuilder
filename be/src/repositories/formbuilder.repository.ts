@@ -22,7 +22,9 @@ export const createTemplate = async (data: {
         VALUES ($1, $2::jsonb)
         ON CONFLICT (user_id)
         DO UPDATE
-        SET templates = form_templates.templates || EXCLUDED.templates
+        SET 
+          templates = form_templates.templates || EXCLUDED.templates,
+          updated_at = NOW()
         RETURNING *;
     `,
       [data.userId, JSON.stringify([template])],
@@ -30,7 +32,24 @@ export const createTemplate = async (data: {
 
     return result.rows[0];
   } catch (error) {
-    console.log("error", error)
     return throwNewError(400, "DB insertion error");
+  }
+};
+
+
+export const getUserTemplates = async (userId: number) => {
+  try {
+    const result = await pool.query(
+      `
+        SELECT templates
+        FROM form_templates
+        WHERE user_id = $1;
+      `,
+      [userId],
+    );
+
+    return result.rows[0]?.templates ?? [];
+  } catch (error) {
+    return throwNewError(400, "DB fetch error");
   }
 };

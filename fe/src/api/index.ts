@@ -39,8 +39,6 @@ export const customFetch = async <TResponse = unknown, TBody = unknown>({
       config.body = options.body;
     } else {
       headers["Content-Type"] = "application/json";
-      console.log("REQUEST BODY OBJECT", options.body);
-console.log("REQUEST BODY JSON", JSON.stringify(options.body));
       config.body = JSON.stringify(options.body);
     }
   }
@@ -100,7 +98,6 @@ export const useCustomQuery = <TResponse = unknown>({
 
     staleTime: options.staleTime ?? 1000 * 60,
     gcTime: options.gcTime ?? 1000 * 60 * 5,
-
     ...options,
   });
 };
