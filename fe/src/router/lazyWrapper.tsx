@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import type { ComponentType, LazyExoticComponent } from "react";
 
 type Props = {
